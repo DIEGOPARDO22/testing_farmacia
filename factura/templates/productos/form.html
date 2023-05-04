@@ -1,0 +1,150 @@
+{% extends "base.html" %}
+{% block titulo %} Insertar Producto {% endblock %}
+{% block contenido %}
+<br/><br/>
+
+<div class="card">
+    <div class="card-header">
+        Insertar Producto
+    </div>
+    <div class="card-body">
+        <h4 class="card-title">Inserte datos</h4>
+
+        <form method="POST">
+            {% csrf_token %}
+            {% if data %}
+            <div class="mb-3">
+              <label for="" class="form-label">ID</label>
+              <input type="text"
+                class="form-control" name="producto_id" id="" aria-describedby="helpId" placeholder="Ejemplo: 0001" value="{{data.0.0}}" maxlength="4" required>
+              <small id="helpId" class="form-text text-muted">Importante: Ingrese únicamente valores de máximo 8 caracteres</small>
+            </div>
+
+            <div class="mb-3">
+                <label for="" class="form-label">Nombre</label>
+                <input type="text"
+                  class="form-control" name="producto_nombre" id="" aria-describedby="helpId" placeholder="Ejemplo: 2022-11-22" value="{{data.0.1}}" required>
+                <small id="helpId" class="form-text text-muted">Importante: El formato de fecha es aaaa-mm-dd</small>
+            </div>
+
+            <div class="mb-3">
+                <label for="" class="form-label">Precio</label>
+                <input type="text"
+                  class="form-control" name="producto_precio" id="" aria-describedby="helpId" placeholder="Ejemplo: 00020" value="{{data.0.2}}" maxlength="5" required>
+                <small id="helpId" class="form-text text-muted">Importante: Ingrese únicamente valores de máximo 5 caracteres</small>
+            </div>
+
+            <div class="mb-3">
+                <label for="" class="form-label">Stock</label>
+                <input type="text"
+                  class="form-control" name="producto_stock" id="" aria-describedby="helpId" placeholder="Ejemplo: 00002" value="{{data.0.3}}" maxlength="5" required>
+                <small id="helpId" class="form-text text-muted">Importante: Ingrese únicamente valores de máximo 5 caracteres</small>
+            </div>
+
+            <div class="mb-3">
+                <label for="" class="form-label">Categoria</label>
+                <input type="text"
+                  class="form-control" name="producto_categoria" id="" aria-describedby="helpId" placeholder="Ejemplo: 00002" value="{{data.0.4}}" maxlength="5" required>
+                <small id="helpId" class="form-text text-muted">Importante: Ingrese únicamente valores de máximo 5 caracteres</small>
+            </div>
+
+            <div class="justify-content-center">
+                <button type="submit" class="btn btn-primary">Ingresar</button>
+                <a name="" id="" class="btn btn-danger" href="{% url 'productos' %}" role="button">Cancelar</a>
+            </div>
+
+            {% else %}
+            <div class="mb-3">
+              <label for="" class="form-label">ID</label>
+              <input type="text"
+                class="form-control" name="producto_id" id="solo-numeros" aria-describedby="helpId" placeholder="Ejemplo: 0001" maxlength="4" pattern="[0-9]{4}" required>
+                
+                <!--Script para restringir SÓLO numeros en el input-->
+                <script>
+                    const input = document.getElementById('solo-numeros');
+                    input.addEventListener('input', function() {
+                      this.value = this.value.replace(/[^0-9]/g, ''); // Remover caracteres no numéricos
+                    });
+                </script>
+
+              <small id="helpId" class="form-text text-muted">(!) Sólo valores de 4 caracteres numéricos</small>
+            </div>
+
+            <div class="mb-3">
+                <label for="" class="form-label">Nombre</label>
+                <input type="text"
+                  class="form-control" name="producto_nombre" id="sin-caracteres-especiales" pattern="[A-Za-z0-9\s]+" aria-describedby="helpId" maxlength="25" placeholder="Ejemplo: Shampoo" required>                  
+                <small id="helpId" class="form-text text-muted">(!) No usar caracteres especiales</small>
+            </div>
+
+            <div class="mb-3">
+                <label for="" class="form-label">Precio</label>
+                <input type="text"
+                  class="form-control" name="producto_precio" id="" aria-describedby="helpId" placeholder="Ejemplo: 25.50" step="0.01" min="0" pattern="[0-9]+([.][0-9]{0,2})?" maxlength="5" required>
+                <small id="helpId" class="form-text text-muted" style="display: block;">(!) Insertar valores de coma flotante</small>
+                <small id="helpId" class="form-text text-muted" style="display: block;">(!) Máximo 2 decimales</small>
+            </div>
+
+            <div class="mb-3">
+                <label for="" class="form-label">Stock</label>
+                <input type="number"
+                  class="form-control" name="producto_stock" id="num-entero" aria-describedby="helpId" placeholder="Ejemplo: 150" maxlength="6" step="1" min="0" oninput="validarNumeroEntero(event)" required>
+                
+                  <script>
+                    var numEntero = document.getElementById("num-entero");
+
+                    numEntero.addEventListener("input", function() {
+                    if (numEntero.value.length > 5) {
+                        numEntero.value = numEntero.value.slice(0, 5); // Limita la cantidad de dígitos numéricos a 7
+                    }
+                    });
+
+                    function validarNumeroEntero(event) {
+                    const input = event.target;
+                    const valor = input.value.trim();
+                    
+                    // Reemplazamos cualquier punto decimal por una cadena vacía
+                    const valorEntero = valor.replace(".", "");
+                    
+                    // Validamos que el valor ingresado sea un número entero positivo
+                    if (/^[0-9]*$/.test(valorEntero) && Number(valorEntero) >= 0) {
+                        // Si el valor es válido, lo dejamos tal cual
+                        input.value = valorEntero;
+                    } else {
+                        // Si el valor no es válido, borramos el último caracter ingresado
+                        input.value = valor.slice(0, -1);
+                    }
+                    }
+                  </script>
+
+                <small id="helpId" class="form-text text-muted">(!) Sólo valores numéricos</small>
+            </div>
+
+            <div class="mb-3">
+                <label for="" class="form-label">Categoria</label>
+                <input type="text"
+                  class="form-control" name="producto_categoria" id="solonumeros" aria-describedby="helpId" placeholder="Ejemplo: 001" maxlength="3" pattern="[0-9]{3}" required>
+                     
+                <!--Script para restringir SÓLO numeros en el input-->
+                <script>
+                    const inputt = document.getElementById('solonumeros');
+                    inputt.addEventListener('input', function() {
+                      this.value = this.value.replace(/[^0-9]/g, ''); // Remover caracteres no numéricos
+                    });
+                </script>
+
+                <small id="helpId" class="form-text text-muted">(!) Sólo valores de 3 caracteres numéricos</small>
+            </div>
+
+            <div class="justify-content-center">
+                <button type="submit" class="btn btn-primary">Ingresar</button>
+                <a name="" id="" class="btn btn-danger" href="{% url 'productos' %}" role="button">Cancelar</a>
+            </div>
+            {% endif %}
+        </form>
+
+    </div>
+    <div class="card-footer text-muted">
+    </div>
+</div>
+{% endblock %}

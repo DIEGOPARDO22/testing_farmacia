@@ -136,3 +136,6 @@ FROM factura INNER JOIN cliente
 WHERE factura.ruc = cliente.ruc;
 
 CALL sp_listar_facturas;
+
+CREATE PROCEDURE `sp_crear_producto`(IN in_id CHAR(4), IN in_nombre VARCHAR(25), IN in_precio DOUBLE, IN in_stock INT, IN in_id_categoria CHAR(3))
+INSERT INTO producto(id_producto, nombre, precio, stock, id_categoria) VALUES(in_id, in_nombre, in_precio, in_stock, in_id_categoria);
