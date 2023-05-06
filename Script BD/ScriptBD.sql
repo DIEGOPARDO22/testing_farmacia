@@ -6,14 +6,13 @@ USE BD_Farmacia;
 
 /*CREACION DE TABLA CLIENTE*/
 CREATE TABLE IF NOT EXISTS cliente(
-    id_cliente CHAR(8) NOT NULL,
-    nombres VARCHAR(80) NOT NULL,
-    apellidos VARCHAR (80) NOT NULL,
+    ruc CHAR(11) NOT NULL,
+    nombresorazon VARCHAR(100) NOT NULL,
     direccion VARCHAR(150),
     fecha_nacimiento DATE,
     telefono CHAR(9),
     email VARCHAR(25),
-    PRIMARY KEY (id_cliente) 
+    PRIMARY KEY (ruc) 
 ) ENGINE=InnoDB;
 
 /*CREACION DE TABLA CATERGORIA*/
@@ -27,10 +26,10 @@ CREATE TABLE IF NOT EXISTS categoria(
 /*CREACTION DE TABLA FACTURA*/
 CREATE TABLE IF NOT EXISTS factura(
     num_factura CHAR(5) NOT NULL,
-    Id_cliente CHAR(8),
+    ruc CHAR(11),
     fecha DATE,
     PRIMARY KEY (num_factura),
-    FOREIGN KEY (Id_cliente) REFERENCES cliente (id_cliente)
+    FOREIGN KEY (ruc) REFERENCES cliente (ruc)
 ) ENGINE=InnoDB;
 
 /*CREACION DE TABLA PRODUCTO*/
@@ -54,39 +53,40 @@ CREATE TABLE IF NOT EXISTS detalle(
     FOREIGN KEY (id_factura) REFERENCES factura (num_factura),
     FOREIGN KEY (id_producto) REFERENCES producto (id_producto)
 ) ENGINE=InnoDB;
+
 /*============================================================
                     INSERCIÓN DE DATOS
 ============================================================*/
 
 /*INSERCION EN TABLA CLIENTE*/
-INSERT INTO cliente (id_cliente, nombres, apellidos, direccion,fecha_nacimiento, telefono, email) VALUES
-(90453612, 'Sofia', 'Rodriguez', 'Calle Los Pinos #123, Urbanización Las Casuarinas, Arequipa', '1997-12-03', '998765432', 'srodriguez@gmail.com'),
-(23657849, 'Alejandro', 'Hernandez', 'Avenida Dolores #456, Urbanización Los Cedros, Yanahuara, Arequipa', '1995-06-21', '995678521', 'ahernandez@hotmail.com'),
-(75891236, 'Valeria', 'Castro', 'Calle Francisco Bolognesi #678, Urbanización Las Condes, Sachaca, Arequipa', '1999-09-05', '954221345', 'vcastro@gmail.com'),
-(12345678, 'David', 'Garcia', 'Calle Mariscal Castilla #210, Distrito De Challapampa, Arequipa', '2000-11-17', '994536187', 'dgarcia@hotmail.com'),
-(89765432, 'Paula', 'Martinez', 'Avenida Ejercito #1234, Urbanización Vila Real, Cayma, Arequipa', '2002-04-02', '958765432', 'pmartinez@hotmail.com'),
-(65412789, 'Juan', 'Gonzalez', 'Calle Lima #567, Urbanización San Lazaro, Arequipa', '1996-08-28', '948765212', 'jgonzalez@gmail.com'),
-(43219876, 'Natalia', 'Diaz', 'Avenida Andres Avelino Caceres #890, Distrito De Hunter, Arequipa', '1998-02-14', '955678123', 'ndiaz@hotmail.com'),
-(56473829, 'Alonso', 'Hernandez', 'Calle Avenida De La Cultura #456, Urbanización Las Vizcachas, Arequipa', '2001-05-30', '948635184', 'ahernandez@gmail.com'),
-(21897543, 'Karla', 'Perez', 'Avenida La Marina #789, Distrito De Cerro Colorado, Arequipa', '1995-10-11', '955786123', 'kperez@hotmail.com'),
-(98765431, 'Miguel', 'Reyes', 'Calle Juanita #234, Urbanización Los Pinos, Arequipa', '2003-07-07', '998734123', 'mreyes@gmail.com');
+INSERT INTO cliente (ruc, nombresorazon, direccion,fecha_nacimiento, telefono, email) VALUES
+(90453612111, 'Pfizer Inc.', 'Calle Los Pinos #123, Urbanización Las Casuarinas, Arequipa', '1997-12-03', '998765432', 'srodriguez@gmail.com'),
+(23657849222, 'Novartis AG.', 'Avenida Dolores #456, Urbanización Los Cedros, Yanahuara, Arequipa', '1995-06-21', '995678521', 'ahernandez@hotmail.com'),
+(75891236333, 'Johnson & Johnson', 'Calle Francisco Bolognesi #678, Urbanización Las Condes, Sachaca, Arequipa', '1999-09-05', '954221345', 'vcastro@gmail.com'),
+(12345678444, 'Umbrella Corporation', 'Calle Mariscal Castilla #210, Distrito De Challapampa, Arequipa', '2000-11-17', '994536187', 'dgarcia@hotmail.com'),
+(89765432555, 'AstraZeneca plc.', 'Avenida Ejercito #1234, Urbanización Vila Real, Cayma, Arequipa', '2002-04-02', '958765432', 'pmartinez@hotmail.com'),
+(65412789666, 'Boehringer Ingelheim', 'Calle Lima #567, Urbanización San Lazaro, Arequipa', '1996-08-28', '948765212', 'jgonzalez@gmail.com'),
+(43219876777, 'Roche Holding AG', 'Avenida Andres Avelino Caceres #890, Distrito De Hunter, Arequipa', '1998-02-14', '955678123', 'ndiaz@hotmail.com'),
+(56473829888, 'Eli Lilly and Company', 'Calle Avenida De La Cultura #456, Urbanización Las Vizcachas, Arequipa', '2001-05-30', '948635184', 'ahernandez@gmail.com'),
+(21897543999, 'Sanofi S.A.', 'Avenida La Marina #789, Distrito De Cerro Colorado, Arequipa', '1995-10-11', '955786123', 'kperez@hotmail.com'),
+(98765431101, 'Merck & Co., Inc.', 'Calle Juanita #234, Urbanización Los Pinos, Arequipa', '2003-07-07', '998734123', 'mreyes@gmail.com');
 
 INSERT INTO categoria (id_categoria, nombre, descripcion) VALUES
 ('001', 'Medicamentos', 'Productos para el tratamiento de enfermedades'),
 ('002', 'Cuidado Personal', 'Productos para la higiene y cuidado personal'),
 ('003', 'Vitaminas y Suplementos', 'Productos para complementar la alimentación');
 
-INSERT INTO factura (num_factura, id_cliente, fecha) VALUES
-('00001', 90453612, '2022-01-15'),
-('00002', 23657849, '2022-01-15'),
-('00003', 75891236, '2022-01-16'),
-('00004', 12345678, '2022-01-17'),
-('00005', 89765432, '2022-01-17'),
-('00006', 65412789, '2022-01-18'),
-('00007', 43219876, '2022-01-19'),
-('00008', 56473829, '2022-01-20'),
-('00009', 21897543, '2022-01-20'),
-('00010', 98765431, '2022-01-21');
+INSERT INTO factura (num_factura, ruc, fecha) VALUES
+('00001', 90453612111, '2022-01-15'),
+('00002', 23657849222, '2022-01-15'),
+('00003', 75891236333, '2022-01-16'),
+('00004', 12345678444, '2022-01-17'),
+('00005', 89765432555, '2022-01-17'),
+('00006', 65412789666, '2022-01-18'),
+('00007', 43219876777, '2022-01-19'),
+('00008', 56473829888, '2022-01-20'),
+('00009', 21897543999, '2022-01-20'),
+('00010', 98765431101, '2022-01-21');
 
 INSERT INTO producto (id_producto, nombre, precio, stock, id_categoria) VALUES
 ('0001', 'Paracetamol', 3.50, 500, '001'),
@@ -131,11 +131,11 @@ SELECT * FROM cliente;
 CALL sp_listar_clientes;
 
 CREATE PROCEDURE `sp_listar_facturas`()
-SELECT factura.num_factura, cliente.nombres, factura.fecha
+SELECT factura.num_factura, cliente.nombresorazon, factura.fecha
 FROM factura INNER JOIN cliente
-WHERE factura.id_cliente = cliente.id_cliente;
+WHERE factura.ruc = cliente.ruc;
 
 CALL sp_listar_facturas;
 
-
-
+CREATE PROCEDURE `sp_crear_producto`(IN in_id CHAR(4), IN in_nombre VARCHAR(25), IN in_precio DOUBLE, IN in_stock INT, IN in_id_categoria CHAR(3))
+INSERT INTO producto(id_producto, nombre, precio, stock, id_categoria) VALUES(in_id, in_nombre, in_precio, in_stock, in_id_categoria);
