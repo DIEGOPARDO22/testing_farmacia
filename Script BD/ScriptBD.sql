@@ -34,7 +34,7 @@ CREATE TABLE IF NOT EXISTS factura(
 
 /*CREACION DE TABLA PRODUCTO*/
 CREATE TABLE IF NOT EXISTS producto(
-    id_producto CHAR(4) NOT NULL,
+    id_producto SMALLINT NOT NULL AUTO_INCREMENT,
     nombre VARCHAR(25) NOT NULL,
     precio DOUBLE,
     stock INT,
@@ -42,16 +42,17 @@ CREATE TABLE IF NOT EXISTS producto(
     PRIMARY KEY (id_producto),
     FOREIGN KEY (id_categoria) REFERENCES categoria (id_categoria)
 ) ENGINE=InnoDB;
+ALTER TABLE producto AUTO_INCREMENT=1000;
 
 /*CREACION DE TABLA DETALLE*/
 CREATE TABLE IF NOT EXISTS detalle(
     num_detalle CHAR(5) NOT NULL,
     id_factura CHAR(5) NOT NULL,
-    id_producto CHAR(4),
+    id_producto SMALLINT,
     cantidad INT,
     PRIMARY KEY (num_detalle, id_factura),
     FOREIGN KEY (id_factura) REFERENCES factura (num_factura),
-    FOREIGN KEY (id_producto) REFERENCES producto (id_producto)
+    FOREIGN KEY (id_producto) REFERENCES producto (id_producto) ON UPDATE CASCADE
 ) ENGINE=InnoDB;
 
 /*============================================================
@@ -88,29 +89,29 @@ INSERT INTO factura (num_factura, ruc, fecha) VALUES
 ('00009', 21897543999, '2022-01-20'),
 ('00010', 98765431101, '2022-01-21');
 
-INSERT INTO producto (id_producto, nombre, precio, stock, id_categoria) VALUES
-('0001', 'Paracetamol', 3.50, 500, '001'),
-('0002', 'Ibuprofeno', 5.75, 300, '001'),
-('0003', 'Shampoo', 8.50, 150, '002'),
-('0004', 'Acondicionador', 7.75, 150, '002'),
-('0005', 'Jabón corporal', 3.25, 200, '002'),
-('0006', 'Vitamina C', 6.25, 100, '003'),
-('0007', 'Calcio', 4.50, 75, '003'),
-('0008', 'Magnesio', 5.75, 100, '003'),
-('0009', 'Hierro', 8.25, 50, '003'),
-('0010', 'Vitamina B12', 7.50, 75, '003');
+INSERT INTO producto (nombre, precio, stock, id_categoria) VALUES
+('Paracetamol', 3.50, 500, '001'),
+('Ibuprofeno', 5.75, 300, '001'),
+('Shampoo', 8.50, 150, '002'),
+('Acondicionador', 7.75, 150, '002'),
+('Jabón corporal', 3.25, 200, '002'),
+('Vitamina C', 6.25, 100, '003'),
+('Calcio', 4.50, 75, '003'),
+('Magnesio', 5.75, 100, '003'),
+('Hierro', 8.25, 50, '003'),
+('Vitamina B12', 7.50, 75, '003');
 
 INSERT INTO detalle (num_detalle, id_factura, id_producto, cantidad) VALUES
-('00001', '00001', '0001', 2),
-('00002', '00001', '0003', 1),
-('00003', '00002', '0002', 3),
-('00004', '00003', '0005', 2),
-('00005', '00003', '0006', 1),
-('00006', '00003', '0007', 1),
-('00007', '00004', '0002', 1),
-('00008', '00004', '0004', 1),
-('00009', '00005', '0001', 1),
-('00010', '00005', '0003', 2);
+('00001', '00001', '1001', 2),
+('00002', '00001', '1003', 1),
+('00003', '00002', '1002', 3),
+('00004', '00003', '1005', 2),
+('00005', '00003', '1006', 1),
+('00006', '00003', '1007', 1),
+('00007', '00004', '1002', 1),
+('00008', '00004', '1004', 1),
+('00009', '00005', '1001', 1),
+('00010', '00005', '1003', 2);
 
 SELECT * FROM cliente;
 SELECT * FROM categoria;
@@ -118,24 +119,44 @@ SELECT * FROM factura;
 SELECT * FROM producto;
 SELECT * FROM detalle;
 
+/* =============================================================================================
+											LISTAR
+============================================================================================= */ 
 CREATE PROCEDURE `sp_listar_producto`()
 SELECT producto.id_producto, producto.nombre, producto.precio, producto.stock, categoria.nombre
 FROM producto INNER JOIN categoria 
 WHERE producto.id_categoria = categoria.id_categoria;
 
-CALL sp_listar_producto;
-
 CREATE PROCEDURE `sp_listar_clientes`()
 SELECT * FROM cliente;
-
-CALL sp_listar_clientes;
 
 CREATE PROCEDURE `sp_listar_facturas`()
 SELECT factura.num_factura, cliente.nombresorazon, factura.fecha
 FROM factura INNER JOIN cliente
 WHERE factura.ruc = cliente.ruc;
 
-CALL sp_listar_facturas;
+CREATE PROCEDURE `sp_listar_categorias`()
+SELECT id_categoria, nombre
+FROM categoria;
 
-CREATE PROCEDURE `sp_crear_producto`(IN in_id CHAR(4), IN in_nombre VARCHAR(25), IN in_precio DOUBLE, IN in_stock INT, IN in_id_categoria CHAR(3))
-INSERT INTO producto(id_producto, nombre, precio, stock, id_categoria) VALUES(in_id, in_nombre, in_precio, in_stock, in_id_categoria);
+/* =============================================================================================
+											CREAR
+============================================================================================= */ 
+
+CREATE PROCEDURE `sp_crear_producto`(IN in_nombre VARCHAR(25), IN in_precio DOUBLE, IN in_stock INT, IN in_id_categoria CHAR(3))
+INSERT INTO producto(nombre, precio, stock, id_categoria) VALUES(in_nombre, in_precio, in_stock, in_id_categoria);
+
+/* =============================================================================================
+											EDITAR
+============================================================================================= */ 
+CREATE PROCEDURE `sp_editar_producto`(IN in_id_producto SMALLINT, IN in_nombre VARCHAR(25), IN in_precio DOUBLE, IN in_stock INT, IN in_id_categoria CHAR(3))
+UPDATE producto
+SET nombre=in_nombre, precio=in_precio, stock=in_stock, id_categoria=in_id_categoria
+WHERE id_producto=in_id_producto;
+
+/* =============================================================================================
+											BUSCAR
+============================================================================================= */ 
+CREATE PROCEDURE `sp_buscar_producto_por_id` (IN in_id_producto SMALLINT)
+SELECT producto.id_producto, producto.nombre, producto.precio, producto.stock, producto.id_categoria, categoria.nombre
+FROM producto INNER JOIN categoria WHERE id_producto=in_id_producto AND producto.id_categoria=categoria.id_categoria;
