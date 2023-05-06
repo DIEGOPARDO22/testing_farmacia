@@ -50,6 +50,9 @@ def editar_producto(req, id):
         
     return render(req, 'productos/form.html', {'data':data, 'categoria':cat})
 
+def eliminar_producto(req, id):
+    cursor.execute("CALL sp_eliminar_producto('"+id+"')")
+    return redirect('productos')
 
 
 

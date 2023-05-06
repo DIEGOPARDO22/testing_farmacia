@@ -52,7 +52,7 @@ CREATE TABLE IF NOT EXISTS detalle(
     cantidad INT,
     PRIMARY KEY (num_detalle, id_factura),
     FOREIGN KEY (id_factura) REFERENCES factura (num_factura),
-    FOREIGN KEY (id_producto) REFERENCES producto (id_producto) ON UPDATE CASCADE
+    FOREIGN KEY (id_producto) REFERENCES producto (id_producto) ON UPDATE CASCADE ON DELETE SET NULL
 ) ENGINE=InnoDB;
 
 /*============================================================
@@ -153,6 +153,14 @@ CREATE PROCEDURE `sp_editar_producto`(IN in_id_producto SMALLINT, IN in_nombre V
 UPDATE producto
 SET nombre=in_nombre, precio=in_precio, stock=in_stock, id_categoria=in_id_categoria
 WHERE id_producto=in_id_producto;
+
+/* =============================================================================================
+											BORRAR
+============================================================================================= */ 
+CREATE PROCEDURE `sp_eliminar_producto`(IN in_id_producto SMALLINT)
+DELETE FROM producto
+WHERE id_producto = in_id_producto;
+
 
 /* =============================================================================================
 											BUSCAR

@@ -22,6 +22,7 @@
                         <th scope="col">Precio</th>
                         <th scope="col">Stock</th>
                         <th scope="col">Categoria</th>
+                        <th scope="col">Acciones</th>
                     </tr>
                 </thead>
 
@@ -35,11 +36,11 @@
                             <td>{{ row.4 }}</td>
                             <td>    <!--botones de editado y borrado-->
                                 <a name="" id="" class="btn btn-info" href="{%url 'editar_producto' row.0 %}" role="button">Editar</a>
-                                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal{{ row.0 }}">
                                     Borrar
                                 </button>
                                 
-                                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal fade" id="exampleModal{{ row.0 }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                     <div class="modal-dialog modal-dialog-centered">
                                     <div class="modal-content">
                                         <div class="modal-header">
@@ -50,7 +51,7 @@
                                         Este registro y sus registros relacionados en otras tablas se eliminarán. ¿Está seguro de querer continuar?
                                         </div>
                                         <div class="modal-footer">
-                                            <a name="" id="" class="btn btn-danger" href="" role="button">Borrar de todos modos</a>
+                                            <a name="" id="" class="btn btn-danger" href="{% url 'eliminar_producto' row.0 %}" role="button">Borrar de todos modos</a>
                                         <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Cerrar</button>
                                         </div>
                                     </div>
