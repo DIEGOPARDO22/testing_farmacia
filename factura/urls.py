@@ -12,6 +12,7 @@ urlpatterns = [
     
     # CLIENTES
     path('clientes', views.clientes, name='clientes'),
+    path('clientes/crear-cliente', views.crear_cliente, name='crear-cliente'),
     
     
     
