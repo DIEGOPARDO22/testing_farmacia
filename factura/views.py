@@ -28,13 +28,34 @@ def crear_producto(req):
             return redirect ('productos')
     return render(req, 'productos/form.html')
 
-
+# ================================================================
+#                          CLIENTES
+# ================================================================
 def clientes(req):
     cursor.execute('CALL sp_listar_clientes')
     data = cursor.fetchall()
     return render(req, 'clientes/index.html',{'data':data})
 
+
+
+
+# ================================================================
+#                          FACTURAS
+# ================================================================
+
 def facturas(req):
     cursor.execute('CALL sp_listar_facturas')
     data = cursor.fetchall()
     return render(req, 'facturas/index.html',{'data':data})
+
+
+def crear_factura(req):
+    if req.method=="POST":
+        if req.POST.get("num_factura") and req.POST.get("id_cliente") and req.POST.get("fecha"):
+            num_factura=req.POST.get("num_factura")
+            id_cliente=req.POST.get("id_cliente")
+            fecha=req.POST.get("fecha")
+
+            cursor.execute("CALL sp_crear_producto('"+num_factura+"','"+id_cliente+"','"+fecha+"')")
+            return redirect ('facturas')
+    return render(req, 'facturas/form.html')

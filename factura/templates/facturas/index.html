@@ -7,8 +7,11 @@
 
 <div class="card"> 
     <div class="card-header">
-        <a name="" id="" class="btn btn-success" href="" role="button">Agregar factura</a>
+        <a name="" id="" class="btn btn-success" href="{%url 'clientes'%}" role="button">Clientes</a>
+        <a name="" id="" class="btn btn-success" href="{%url 'productos'%}" role="button">Productos</a>
+
     </div>
+    <!-- BODY -->
     <div class="card-body">
         <h4 class="card-title">Facturas</h4> <!--TITULO-->
         <!--CONTENIDO-->
@@ -59,8 +62,11 @@
                 </tbody>
             </table>
         </div>
-        
+        <div>
+            <a name="" id="" class="btn btn-success" href="{%url 'crear_producto'%}" role="button">Agregar factura</a>
+        </div>
     </div>
+    
     <div class="card-footer text-muted">
         <!--FOOTER-->
     </div>
