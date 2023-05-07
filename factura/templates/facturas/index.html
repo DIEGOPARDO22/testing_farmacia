@@ -33,7 +33,7 @@
                             <td>{{ row.1 }}</td>
                             <td>{{ row.2 }}</td>
                             <td>    <!--botones de editado y borrado-->
-                                <a name="" id="" class="btn btn-primary" href="" role="button">Ver</a>
+                                <a name="" id="" class="btn btn-primary" href="{%url 'ver_factura' row.0%}" role="button">Ver</a>
                                 <a name="" id="" class="btn btn-info" href="" role="button">Editar</a>
                                 <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">
                                     Borrar
@@ -63,7 +63,8 @@
             </table>
         </div>
         <div>
-            <a name="" id="" class="btn btn-success" href="{%url 'crear_producto'%}" role="button">Agregar factura</a>
+            <a name="" id="" class="btn btn-success" href="{%url 'crear_factura_y_detalle'%}" role="button">Agregar factura</a>
+
         </div>
     </div>
     

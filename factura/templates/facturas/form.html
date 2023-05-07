@@ -14,131 +14,176 @@
             {% csrf_token %}
             {% if data %}
             <div class="mb-3">
-              <label for="" class="form-label">ID</label>
+              <label for="" class="form-label">Ruc</label>
               <input type="text"
-                class="form-control" name="producto_id" id="" aria-describedby="helpId" placeholder="Ejemplo: 0001" value="{{data.0.0}}" maxlength="4" required>
-              <small id="helpId" class="form-text text-muted">Importante: Ingrese únicamente valores de máximo 8 caracteres</small>
+                class="form-control" name="ruc" id="sin-caracteres-especiales" pattern="[A-Za-z0-9\s]+" aria-describedby="helpId" maxlength="25" placeholder="Ejemplo: 12345678444" value="{{data.0.1}}" required>                  
+              <small id="helpId" class="form-text text-muted">(!) No usar caracteres especiales</small>
             </div>
 
-            <div class="mb-3">
-                <label for="" class="form-label">Nombre</label>
-                <input type="text"
-                  class="form-control" name="producto_nombre" id="" aria-describedby="helpId" placeholder="Ejemplo: 2022-11-22" value="{{data.0.1}}" required>
-                <small id="helpId" class="form-text text-muted">Importante: El formato de fecha es aaaa-mm-dd</small>
-            </div>
+          <div class="mb-3">
+              <label for="" class="form-label">Fecha</label>
+              <input type="date"
+                class="form-control" name="producto_precio" id="" aria-describedby="helpId" placeholder="Ejemplo: 25.50" step="0.01" min="0" pattern="[0-9]+([.][0-9]{0,2})?" maxlength="5" value="{{data.0.2}}" required>
+              <small id="helpId" class="form-text text-muted" style="display: block;">(!) Insertar valores de coma flotante</small>
+              <small id="helpId" class="form-text text-muted" style="display: block;">(!) Máximo 2 decimales</small>
+          </div>
 
-            <div class="mb-3">
-                <label for="" class="form-label">Precio</label>
-                <input type="text"
-                  class="form-control" name="producto_precio" id="" aria-describedby="helpId" placeholder="Ejemplo: 00020" value="{{data.0.2}}" maxlength="5" required>
-                <small id="helpId" class="form-text text-muted">Importante: Ingrese únicamente valores de máximo 5 caracteres</small>
-            </div>
+          <div class="mb-3">
+              <label for="" class="form-label">Stock</label>
+              <input type="number"
+                class="form-control" name="producto_stock" id="num-entero" aria-describedby="helpId" placeholder="Ejemplo: 150" maxlength="6" step="1" min="0" oninput="validarNumeroEntero(event)" value="{{data.0.3}}" required>
+              
+                <script>
+                  var numEntero = document.getElementById("num-entero");
 
-            <div class="mb-3">
-                <label for="" class="form-label">Stock</label>
-                <input type="text"
-                  class="form-control" name="producto_stock" id="" aria-describedby="helpId" placeholder="Ejemplo: 00002" value="{{data.0.3}}" maxlength="5" required>
-                <small id="helpId" class="form-text text-muted">Importante: Ingrese únicamente valores de máximo 5 caracteres</small>
-            </div>
+                  numEntero.addEventListener("input", function() {
+                  if (numEntero.value.length > 5) {
+                      numEntero.value = numEntero.value.slice(0, 5); // Limita la cantidad de dígitos numéricos a 7
+                  }
+                  });
 
-            <div class="mb-3">
-                <label for="" class="form-label">Categoria</label>
-                <input type="text"
-                  class="form-control" name="producto_categoria" id="" aria-describedby="helpId" placeholder="Ejemplo: 00002" value="{{data.0.4}}" maxlength="5" required>
-                <small id="helpId" class="form-text text-muted">Importante: Ingrese únicamente valores de máximo 5 caracteres</small>
-            </div>
+                  function validarNumeroEntero(event) {
+                  const input = event.target;
+                  const valor = input.value.trim();
+                  
+                  // Reemplazamos cualquier punto decimal por una cadena vacía
+                  const valorEntero = valor.replace(".", "");
+                  
+                  // Validamos que el valor ingresado sea un número entero positivo
+                  if (/^[0-9]*$/.test(valorEntero) && Number(valorEntero) >= 0) {
+                      // Si el valor es válido, lo dejamos tal cual
+                      input.value = valorEntero;
+                  } else {
+                      // Si el valor no es válido, borramos el último caracter ingresado
+                      input.value = valor.slice(0, -1);
+                  }
+                  }
+                </script>
 
-            <div class="justify-content-center">
-                <button type="submit" class="btn btn-primary">Ingresar</button>
-                <a name="" id="" class="btn btn-danger" href="{% url 'productos' %}" role="button">Cancelar</a>
-            </div>
+              <small id="helpId" class="form-text text-muted">(!) Sólo valores numéricos</small>
+          </div>
 
+          <div class="mb-3">
+              <label for="" class="form-label">Categoria</label>
+              <select class="form-select" aria-label="Default select example" name="producto_categoria" value="{{data.0.4}}">
+                <option selected value="{{data.0.4}}">{{data.0.5}}</option>
+                <option value="{{categoria.0.0}}">{{categoria.0.1}}</option>
+                <option value="{{categoria.1.0}}">{{categoria.1.1}}</option>
+                <option value="{{categoria.2.0}}">{{categoria.2.1}}</option>
+              </select>
+
+              <small id="helpId" class="form-text text-muted">(!) Despliegue la lista para ver las categorías</small>
+          </div>
+
+          <div class="justify-content-center">
+              <button type="submit" class="btn btn-primary">Ingresar</button>
+              <a name="" id="" class="btn btn-danger" href="{% url 'facturas' %}" role="button">Cancelar</a>
+          </div>
             {% else %}
             <div class="mb-3">
-              <label for="" class="form-label">ID</label>
-              <input type="text"
-                class="form-control" name="producto_id" id="solo-numeros" aria-describedby="helpId" placeholder="Ejemplo: 0001" maxlength="4" pattern="[0-9]{4}" required>
-                
-                <!--Script para restringir SÓLO numeros en el input-->
-                <script>
-                    const input = document.getElementById('solo-numeros');
-                    input.addEventListener('input', function() {
-                      this.value = this.value.replace(/[^0-9]/g, ''); // Remover caracteres no numéricos
-                    });
-                </script>
-
-              <small id="helpId" class="form-text text-muted">(!) Sólo valores de 4 caracteres numéricos</small>
+              <label for="cliente" class="form-label">Cliente</label>
+              <input type="text" class="form-control" name="cliente" id="cliente" pattern="[A-Za-zÀ-ÿ0-9\s.,:;-]+" aria-describedby="helpId" maxlength="25" placeholder="Ejemplo: Sanofi S.A." value="{{data.0.1}}" required>
+              <small id="helpId" class="form-text text-muted">(!) No usar caracteres especiales</small>
+              <select class="form-select text-muted" aria-label="Default select example" name="ruc" id="ruc">
+                {% for r in ruc %}
+                <option value="{{ r.0 }}">{{ r.1 }}</option>
+                {% endfor %}
+              </select>
+              
+              <script>
+                  const clienteInput = document.querySelector('#cliente');
+                  const clienteSelect = document.querySelector('#ruc');
+                  const options = clienteSelect.options;   
+                  console.log (clienteInput);     
+                  let selectedIndex = -1; // inicializa el índice seleccionado en -1         
+                  clienteInput.addEventListener('input', () => {
+                      const value = clienteInput.value.toLowerCase();
+                      selectedIndex = -1; // reinicializa el índice seleccionado en cada input
+                      for (let i = 0; i < options.length; i++) {
+                          const option = options[i];
+                          const text = option.text.toLowerCase();
+                          if (text.includes(value)) {
+                              option.style.display = '';
+                              if (selectedIndex === -1) {
+                                  selectedIndex = i;
+                              }
+                          } else {
+                              option.style.display = 'none';
+                          }
+                      }
+                      if (selectedIndex !== -1) {
+                          clienteSelect.selectedIndex = selectedIndex;
+                          clienteSelect.classList.remove('text-muted'); //remueve la clase que lo hace gris
+                      } else {
+                          clienteSelect.classList.add('text-muted'); //si no encuentra nada lo pone gris
+                      }
+                  });
+          
+                  clienteSelect.addEventListener('change', () => {
+                      selectedIndex = clienteSelect.selectedIndex; // actualiza el índice seleccionado
+                      clienteInput.value = clienteSelect.options[selectedIndex].text; // actualiza el valor del input con el valor seleccionado
+                  });
+                  
+              </script>
             </div>
-
+             
             <div class="mb-3">
-                <label for="" class="form-label">Nombre</label>
-                <input type="text"
-                  class="form-control" name="producto_nombre" id="sin-caracteres-especiales" pattern="[A-Za-z0-9\s]+" aria-describedby="helpId" maxlength="25" placeholder="Ejemplo: Shampoo" required>                  
-                <small id="helpId" class="form-text text-muted">(!) No usar caracteres especiales</small>
+              <label for="" class="form-label">Fecha</label>
+              <input type="text" class="form-control" name="fecha" id="" aria-describedby="helpId" placeholder="Ejemplo: 2022-01-15" pattern="\d{4}-\d{2}-\d{2}" maxlength="10" required>
+              <small id="helpId" class="form-text text-muted" style="display: block;">(!) Insertar fecha en formato AAAA-MM-DD</small>       
             </div>
-
-            <div class="mb-3">
-                <label for="" class="form-label">Precio</label>
-                <input type="text"
-                  class="form-control" name="producto_precio" id="" aria-describedby="helpId" placeholder="Ejemplo: 25.50" step="0.01" min="0" pattern="[0-9]+([.][0-9]{0,2})?" maxlength="5" required>
-                <small id="helpId" class="form-text text-muted" style="display: block;">(!) Insertar valores de coma flotante</small>
-                <small id="helpId" class="form-text text-muted" style="display: block;">(!) Máximo 2 decimales</small>
-            </div>
-
-            <div class="mb-3">
-                <label for="" class="form-label">Stock</label>
-                <input type="number"
-                  class="form-control" name="producto_stock" id="num-entero" aria-describedby="helpId" placeholder="Ejemplo: 150" maxlength="6" step="1" min="0" oninput="validarNumeroEntero(event)" required>
-                
-                  <script>
-                    var numEntero = document.getElementById("num-entero");
-
-                    numEntero.addEventListener("input", function() {
-                    if (numEntero.value.length > 5) {
-                        numEntero.value = numEntero.value.slice(0, 5); // Limita la cantidad de dígitos numéricos a 7
-                    }
-                    });
-
-                    function validarNumeroEntero(event) {
-                    const input = event.target;
-                    const valor = input.value.trim();
+            
+            <div class="card-body">
+              <div class="d-flex align-items-center justify-content-between">
+                  <h4 class=" title-detalle">Detalle</h4>
+                  <button class="btn btn-success align-self-end" id="btn-add-row">Añadir</button>
+              </div>
+              <table class="table" id="table-detalle">
+                  <thead>
+                      <tr>
+                          <th scope="col">Producto</th>
+                          <th scope="col">Cantidad</th>
+                          <th scope="col">Total</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      <tr>
+                        <td><select class="form-select text-muted" aria-label="Default select example" name="id_producto" id="id_producto">
+                          <option value="{{id_producto.0.0}}">{{id_producto.0.1}}</option>
+                          <option value="{{id_producto.1.0}}">{{id_producto.1.1}}</option>
+                          <option value="{{id_producto.2.0}}">{{id_producto.2.1}}</option>
+                        </select></td>
+                        <td><select class="form-select text-muted" aria-label="Default select example" name="id_producto" id="id_producto">
+                          <option value="{{id_producto.0.0}}">{{id_producto.0.1}}</option>
+                          <option value="{{id_producto.1.0}}">{{id_producto.1.1}}</option>
+                          <option value="{{id_producto.2.0}}">{{id_producto.2.1}}</option>
+                        </select></td>
+                      </tr>
+                  </tbody>
+              </table>
+              <script>
+                const btnAddRow = document.querySelector('#btn-add-row');
+                const tableDetalle = document.querySelector('#table-detalle');
+            
+                btnAddRow.addEventListener('click', () => {
+                    const newRow = tableDetalle.insertRow(-1);
+                    const cell1 = newRow.insertCell(0);
+                    const cell2 = newRow.insertCell(1);
+                    const cell3 = newRow.insertCell(2);
                     
-                    // Reemplazamos cualquier punto decimal por una cadena vacía
-                    const valorEntero = valor.replace(".", "");
-                    
-                    // Validamos que el valor ingresado sea un número entero positivo
-                    if (/^[0-9]*$/.test(valorEntero) && Number(valorEntero) >= 0) {
-                        // Si el valor es válido, lo dejamos tal cual
-                        input.value = valorEntero;
-                    } else {
-                        // Si el valor no es válido, borramos el último caracter ingresado
-                        input.value = valor.slice(0, -1);
-                    }
-                    }
-                  </script>
-
-                <small id="helpId" class="form-text text-muted">(!) Sólo valores numéricos</small>
+                    cell1.innerHTML = 'Nuevo producto';
+                    cell2.innerHTML = '1';
+                    cell3.innerHTML = '$100';
+                });
+                
+              </script>
+            
             </div>
-
-            <div class="mb-3">
-                <label for="" class="form-label">Categoria</label>
-                <input type="text"
-                  class="form-control" name="producto_categoria" id="solonumeros" aria-describedby="helpId" placeholder="Ejemplo: 001" maxlength="3" pattern="[0-9]{3}" required>
-                     
-                <!--Script para restringir SÓLO numeros en el input-->
-                <script>
-                    const inputt = document.getElementById('solonumeros');
-                    inputt.addEventListener('input', function() {
-                      this.value = this.value.replace(/[^0-9]/g, ''); // Remover caracteres no numéricos
-                    });
-                </script>
-
-                <small id="helpId" class="form-text text-muted">(!) Sólo valores de 3 caracteres numéricos</small>
-            </div>
+          
 
             <div class="justify-content-center">
                 <button type="submit" class="btn btn-primary">Ingresar</button>
-                <a name="" id="" class="btn btn-danger" href="{% url 'productos' %}" role="button">Cancelar</a>
+                <a name="" id="" class="btn btn-danger" href="{% url 'facturas' %}" role="button">Cancelar</a>
             </div>
             {% endif %}
         </form>
@@ -146,5 +191,11 @@
     </div>
     <div class="card-footer text-muted">
     </div>
+
+    <style> 
+      .title-detalle{
+        margin-top: 2rem
+      };
+    </style>
 </div>
 {% endblock %}
