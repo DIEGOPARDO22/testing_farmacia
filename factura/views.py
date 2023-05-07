@@ -131,7 +131,7 @@ def crear_detalle(req):
         if req.POST.get("ruc") and req.POST.get("fecha"):
             ruc = req.POST.get("ruc")
             fecha = req.POST.get("fecha")
-            cursor.execute("CALL sp_crear_factura('" +
+            cursor.execute("CALL sp_crear_detalle('" +
                            ruc+"','"+fecha+"')")
             return redirect('facturas')
     return render(req, 'facturas/form.html', {'ruc': cat})
