@@ -2,8 +2,6 @@ from django.shortcuts import render, redirect
 from django.db import connection
 
 cursor = connection.cursor()  # cursor
-
-
 def inicio(req):
     return render(req, 'inicio.html')
 
@@ -27,8 +25,7 @@ def crear_producto(req):
             precio = req.POST.get("producto_precio")
             stock = req.POST.get("producto_stock")
             categoria = req.POST.get("producto_categoria")
-
-            cursor.execute("CALL sp_crear_producto('"+nombre+"','"+precio+"','"+stock+"','"+categoria+"')")
+            cursor.execute("CALL sp_crear_producto('"+nombre+"','"+(precio)+"','"+stock+"','"+categoria+"')")
             return redirect('productos')
     return render(req, 'productos/form.html', {'categoria': cat})
 
@@ -121,4 +118,13 @@ def crear_detalle(req):
 def eliminar_facturas(req, id):
     cursor.execute("call sp_eliminar_factura('"+id+"')")
     return redirect ('facturas')
-    
+
+def ver_factura(req, id):
+    cursor.execute("call sp_ver_factura(%s)", (id,))
+    data = cursor.fetchall()
+    print("esta es la data:", data)
+    total_venta = float(data[0][5])
+    descuento = total_venta * 0.05
+    total_igv = descuento * 0.18
+    importe_total = total_venta + total_igv
+    return render(req, 'facturas/preliminar.html', {'data': data, 'total_igv': total_igv, 'importe_total': importe_total, 'descuento': descuento})

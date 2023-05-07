@@ -22,6 +22,7 @@ urlpatterns = [
     path('facturas', views.facturas, name='facturas'),
     path('facturas/crear-factura', views.crear_factura, name='crear_factura'),
     path('facturas/eliminar/<str:id>', views.eliminar_facturas, name='eliminar_facturas'),
+    path('facturas/mostrar-factura/<str:id>', views.ver_factura, name='ver_factura'),
 
 
 ]
