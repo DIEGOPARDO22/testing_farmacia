@@ -109,14 +109,16 @@ def crear_factura(req):
 
 
 def crear_detalle(req):
+    cursor.execute('CALL sp_listar_producto')
+    cat = cursor.fetchall()
     if req.method == "POST":
-        if req.POST.get("id_producto") and req.POST.get("cantidad"):
-            id_producto = req.POST.get("id_producto")
-            cantidad = req.POST.get("cantidad")
-            cursor.execute("CALL sp_crear_detalle('" +
-                           id_producto+"','"+cantidad+"')")
+        if req.POST.get("ruc") and req.POST.get("fecha"):
+            ruc = req.POST.get("ruc")
+            fecha = req.POST.get("fecha")
+            cursor.execute("CALL sp_crear_factura('" +
+                           ruc+"','"+fecha+"')")
             return redirect('facturas')
-    return render(req, 'facturas/form.html')
+    return render(req, 'facturas/form.html', {'ruc': cat})
 
 def eliminar_facturas(req, id):
     cursor.execute("call sp_eliminar_factura('"+id+"')")
