@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.db import connection
-
+import pyautogui
+import time
 cursor = connection.cursor()  # cursor
 def inicio(req):
     return render(req, 'inicio.html')
@@ -173,8 +174,17 @@ def ver_factura(req, id):
     cursor.execute("call sp_ver_factura(%s)", (id,))
     data = cursor.fetchall()
     print("esta es la data:", data)
-    total_venta = float(data[0][5])
-    descuento = total_venta * 0.05
-    total_igv = descuento * 0.18
-    importe_total = total_venta + total_igv
+    total_venta = float(data[0][6])
+    descuento = total_venta * 0.01
+    total_igv = total_venta * 0.18
+    importe_total = total_venta + total_igv -descuento
     return render(req, 'facturas/preliminar.html', {'data': data, 'total_igv': total_igv, 'importe_total': importe_total, 'descuento': descuento})
+
+
+def print_fact(req):
+    try:
+        pyautogui.hotkey('ctrl', 'p')
+        time.sleep(5)
+        return render(req, 'inicio.html')
+    except Exception as e:
+        print(f"Error: {e}")

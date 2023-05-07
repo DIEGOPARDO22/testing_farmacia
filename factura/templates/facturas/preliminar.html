@@ -29,15 +29,15 @@
                 <p class="h5"> FARMACIA LAS ANTENAS</p>
                 <p class="h8"> {{direccion}}</p>
                 <hr>
-                <p class="h6">FECHA DE EMISION:</p>
+                <p class="h6"><br> <b>FECHA DE EMISION:</b><br></p>
                 <p>{{row.1}}</p>
-                <p>RAZON SOCIAL:</p>
-                <p>{{row.1}}</p>
-                <p class="h6">RUC</p>
+                <p><br><b>RAZON SOCIAL:</b><br></p>
+                <p>{{row.2}}</p>
+                <p class="h6"><br><b>RUC </b><br></p>
                 <p>{{row.3}}</p>
-                <p class="h6">Tipo de Moneda</p>
+                <p class="h6"><br><b>Tipo de Moneda</b> <br></p>
                 <p>SOLES</p>
-                <p class="h6">DIRECCION</p>
+                <p class="h6"><br><b>DIRECCION</b> <br></p>
                 <p>{{row.7}}</p>
             
             </div>
@@ -58,32 +58,33 @@
                 <tr class="">
                     <td scope="row">{{ row.4 }}</td>
                     <td>{{ row.5 }}</td>
-                    <td>{{ row.2 }}</td>
+                    <td>{{ row.6 }}</td>
                     <td>{{importe_total}}</td>
                 </tr>
             </tbody>
             </table>
         </div>
         <br>
-        <br>
-        <br>
         <div class="d-flex mb-3">
             <div class="flex-fill "></div>
             <div class=" flex-fill "></div>
             <div class=" flex-fill">
-                <p><b>Total valor venta </b> S/ {{row.5}}</p>
+                <p><b>Total valor venta </b> S/ {{row.6}}</p>
                 <p><b>Descuento </b> S/ {{descuento}}</p>
                 <p><b>Total IGV (18%) </b> S/ {{total_igv}}</p>
                 <p><b>Importe total </b> S/ {{importe_total}}</p>
             </div>
         </div>
         <br>
-        <br>
         <div class="d-flex mb-3">
             <div class="flex-fill "></div>
             <div class=" flex-fill ">
-                <a name="" id="" class="btn btn-danger" href="{%url 'facturas'%}" role="button">Volver</a>
-                <a name="" id="" class="btn btn-success" href="" role="button">Emitir factura</a>
+
+                <form method="POST" action="{% url 'print_fact' %}">
+                {% csrf_token %}
+                    <button type="submit" class="btn btn-success">Emitir factura</button>
+                    <a name="" id="" class="btn btn-danger" href="{%url 'facturas'%}" role="button">Volver</a>
+                </form>                
             </div>
             <div class=" flex-fill"></div>
         </div>
