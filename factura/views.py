@@ -32,6 +32,7 @@ def crear_producto(req):
             return redirect('productos')
     return render(req, 'productos/form.html', {'categoria': cat})
 
+
 def editar_producto(req, id):
     cursor.execute("CALL sp_buscar_producto_por_id('"+id+"')")
     data = cursor.fetchall()
@@ -69,19 +70,35 @@ def clientes(req):
 
 def crear_cliente(req):
     if req.method == "POST":
-        if req.POST.get("id_cliente") and req.POST.get("nombres") and req.POST.get("apellidos") and req.POST.get("direccion") and req.POST.get("fecha_nacimiento") and req.POST.get("telefono") and req.POST.get("email"):
-            id_cliente = req.POST.get("id_cliente")
-            nombres = req.POST.get("nombres")
-            apellidos = req.POST.get("apellidos")
-            direccion = req.POST.get("direccion")
-            fecha_nacimiento = req.POST.get("fecha_nacimiento")
-            telefono = req.POST.get("telefono")
-            email = req.POST.get("email")
+        if req.POST.get("cliente_ruc") and req.POST.get("cliente_razon") and req.POST.get("cliente_direccion") and req.POST.get("cliente_telefono") and req.POST.get("cliente_email"):
+            ruc = req.POST.get("cliente_ruc")
+            razon = req.POST.get("cliente_razon")
+            direccion = req.POST.get("cliente_direccion")
+            telefono = req.POST.get("cliente_telefono")
+            email = req.POST.get("cliente_email")
 
-            cursor.execute("CALL sp_crear_producto('"+id_cliente+"','"+nombres+"','"+apellidos +
-                           "','"+direccion+"','"+fecha_nacimiento+"','"+telefono+"','"+email+"')")
+            cursor.execute("CALL sp_crear_cliente('"+ruc+"','"+razon+"','"+direccion+"','"+telefono+"','"+email+"')")
             return redirect('clientes')
     return render(req, 'clientes/form.html')
+
+def editar_cliente(req, id):
+    cursor.execute("CALL sp_buscar_cliente_por_id('"+id+"')")
+    data = cursor.fetchall()
+    if req.method == "POST":
+        if req.POST.get("cliente_ruc") and req.POST.get("cliente_razon") and req.POST.get("cliente_direccion") and req.POST.get("cliente_telefono") and req.POST.get("cliente_email"):
+            ruc = req.POST.get("cliente_ruc")
+            razon = req.POST.get("cliente_razon")
+            direccion = req.POST.get("cliente_direccion")
+            telefono = req.POST.get("cliente_telefono")
+            email = req.POST.get("cliente_email")
+
+            cursor.execute("CALL sp_editar_cliente('"+ruc+"','"+razon+"','"+direccion+"','"+telefono+"','"+email+"')")
+            return redirect('clientes')
+    return render(req, 'clientes/form.html',{'data':data})
+
+def eliminar_cliente(req, id):
+    cursor.execute("CALL sp_eliminar_cliente('"+id+"')")
+    return redirect('clientes')
 
 
 # ================================================================
@@ -95,13 +112,29 @@ def facturas(req):
 
 
 def crear_factura(req):
+    cursor.execute('CALL sp_listar_clientes')
+    cat = cursor.fetchall()
     if req.method == "POST":
-        if req.POST.get("num_factura") and req.POST.get("id_cliente") and req.POST.get("fecha"):
-            num_factura = req.POST.get("num_factura")
-            id_cliente = req.POST.get("id_cliente")
+        if req.POST.get("ruc") and req.POST.get("fecha"):
+            ruc = req.POST.get("ruc")
             fecha = req.POST.get("fecha")
+            cursor.execute("CALL sp_crear_factura('" +
+                           ruc+"','"+fecha+"')")
+            return redirect('facturas')
+    return render(req, 'facturas/form.html', {'ruc': cat})
 
-            cursor.execute("CALL sp_crear_producto('" +
-                           num_factura+"','"+id_cliente+"','"+fecha+"')")
+
+def crear_detalle(req):
+    if req.method == "POST":
+        if req.POST.get("id_producto") and req.POST.get("cantidad"):
+            id_producto = req.POST.get("id_producto")
+            cantidad = req.POST.get("cantidad")
+            cursor.execute("CALL sp_crear_detalle('" +
+                           id_producto+"','"+cantidad+"')")
             return redirect('facturas')
     return render(req, 'facturas/form.html')
+
+def eliminar_facturas(req, id):
+    cursor.execute("call sp_eliminar_factura('"+id+"')")
+    return redirect ('facturas')
+    
