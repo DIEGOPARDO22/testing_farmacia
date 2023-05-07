@@ -11,11 +11,12 @@ urlpatterns = [
     path('productos/editar-producto/<str:id>', views.editar_producto, name='editar_producto'),       
     path('productos/eliminar/<str:id>', views.eliminar_producto, name='eliminar_producto'),
     
-    
     # CLIENTES
     path('clientes', views.clientes, name='clientes'),
-    path('clientes/crear-cliente', views.crear_cliente, name='crear-cliente'),
-    
+    path('clientes/crear-cliente', views.crear_cliente, name='crear_cliente'),
+    path('clientes/editar-cliente', views.editar_cliente, name='editar_cliente'),
+    path('clientes/editar-cliente/<str:id>', views.editar_cliente, name='editar_cliente'),
+    path('clientes/eliminar/<str:id>', views.eliminar_cliente, name='eliminar_cliente'),
     
     
     # FACTURAS
