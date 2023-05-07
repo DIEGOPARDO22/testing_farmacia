@@ -19,19 +19,42 @@ def productos(req):
 
 
 def crear_producto(req):
+    cursor.execute('CALL sp_listar_categorias')
+    cat = cursor.fetchall()
     if req.method == "POST":
-        if req.POST.get("producto_id") and req.POST.get("producto_nombre") and req.POST.get("producto_precio") and req.POST.get("producto_stock") and req.POST.get("producto_categoria"):
-            producto_id = req.POST.get("producto_id")
+        if req.POST.get("producto_nombre") and req.POST.get("producto_precio") and req.POST.get("producto_stock") and req.POST.get("producto_categoria"):
             nombre = req.POST.get("producto_nombre")
             precio = req.POST.get("producto_precio")
             stock = req.POST.get("producto_stock")
             categoria = req.POST.get("producto_categoria")
 
-            cursor.execute("CALL sp_crear_producto('"+producto_id +
-                           "','"+nombre+"','"+precio+"','"+stock+"','"+categoria+"')")
-
+            cursor.execute("CALL sp_crear_producto('"+nombre+"','"+precio+"','"+stock+"','"+categoria+"')")
             return redirect('productos')
-    return render(req, 'productos/form.html')
+    return render(req, 'productos/form.html', {'categoria': cat})
+
+
+def editar_producto(req, id):
+    cursor.execute("CALL sp_buscar_producto_por_id('"+id+"')")
+    data = cursor.fetchall()
+    cursor.execute('CALL sp_listar_categorias')
+    cat = cursor.fetchall()
+    
+    if req.method == "POST":
+        if req.POST.get("producto_nombre") and req.POST.get("producto_precio") and req.POST.get("producto_stock") and req.POST.get("producto_categoria"):
+            nombre = req.POST.get("producto_nombre")
+            precio = req.POST.get("producto_precio")
+            stock = req.POST.get("producto_stock")
+            categoria = req.POST.get("producto_categoria")
+
+            cursor.execute("CALL sp_editar_producto('"+str(data[0][0])+"','"+nombre+"','"+precio+"','"+stock+"','"+categoria+"')")
+            return redirect('productos')
+        
+    return render(req, 'productos/form.html', {'data':data, 'categoria':cat})
+
+def eliminar_producto(req, id):
+    cursor.execute("CALL sp_eliminar_producto('"+id+"')")
+    return redirect('productos')
+
 
 
 # ================================================================
@@ -94,3 +117,8 @@ def crear_detalle(req):
                            id_producto+"','"+cantidad+"')")
             return redirect('facturas')
     return render(req, 'facturas/form.html')
+
+def eliminar_facturas(req, id):
+    cursor.execute("call sp_eliminar_factura('"+id+"')")
+    return redirect ('facturas')
+    
