@@ -14,15 +14,15 @@
             {% csrf_token %}
             {% if data %}
             <div class="mb-3">
-              <label for="" class="form-label">Nombre</label>
+              <label for="" class="form-label">Ruc</label>
               <input type="text"
-                class="form-control" name="producto_nombre" id="sin-caracteres-especiales" pattern="[A-Za-z0-9\s]+" aria-describedby="helpId" maxlength="25" placeholder="Ejemplo: Shampoo" value="{{data.0.1}}" required>                  
+                class="form-control" name="ruc" id="sin-caracteres-especiales" pattern="[A-Za-z0-9\s]+" aria-describedby="helpId" maxlength="25" placeholder="Ejemplo: 12345678444" value="{{data.0.1}}" required>                  
               <small id="helpId" class="form-text text-muted">(!) No usar caracteres especiales</small>
-          </div>
+            </div>
 
           <div class="mb-3">
-              <label for="" class="form-label">Precio</label>
-              <input type="text"
+              <label for="" class="form-label">Fecha</label>
+              <input type="date"
                 class="form-control" name="producto_precio" id="" aria-describedby="helpId" placeholder="Ejemplo: 25.50" step="0.01" min="0" pattern="[0-9]+([.][0-9]{0,2})?" maxlength="5" value="{{data.0.2}}" required>
               <small id="helpId" class="form-text text-muted" style="display: block;">(!) Insertar valores de coma flotante</small>
               <small id="helpId" class="form-text text-muted" style="display: block;">(!) Máximo 2 decimales</small>
@@ -82,14 +82,54 @@
 
             {% else %}
             <div class="mb-3">
-                <label for="" class="form-label">Nombre</label>
-                <input type="text"
-                  class="form-control" name="producto_nombre" id="sin-caracteres-especiales" pattern="[A-Za-z0-9\s]+" aria-describedby="helpId" maxlength="25" placeholder="Ejemplo: Shampoo" required>                  
-                <small id="helpId" class="form-text text-muted">(!) No usar caracteres especiales</small>
-            </div>
-
+              <label for="cliente" class="form-label">Cliente</label>
+              <input type="text" class="form-control" name="cliente" id="cliente" pattern="[A-Za-z0-9\s]+" aria-describedby="helpId" maxlength="25" placeholder="Ejemplo: Sanofi S.A." value="{{data.0.1}}" required>
+              <small id="helpId" class="form-text text-muted">(!) No usar caracteres especiales</small>
+              <select class="form-select text-muted" aria-label="Default select example" name="cliente_select" id="cliente_select">
+                  {% for r in ruc %}
+                  <option value="{{ r.0 }}">{{ r.1 }}</option>
+                  {% endfor %}
+              </select>
+              <script>
+                  const clienteInput = document.querySelector('#cliente');
+                  const clienteSelect = document.querySelector('#cliente_select');
+                  const options = clienteSelect.options;
+          
+                  let selectedIndex = -1; // inicializa el índice seleccionado en -1
+          
+                  clienteInput.addEventListener('input', () => {
+                      const value = clienteInput.value.toLowerCase();
+                      selectedIndex = -1; // reinicializa el índice seleccionado en cada input
+                      for (let i = 0; i < options.length; i++) {
+                          const option = options[i];
+                          const text = option.text.toLowerCase();
+                          if (text.includes(value)) {
+                              option.style.display = '';
+                              if (selectedIndex === -1) {
+                                  selectedIndex = i;
+                              }
+                          } else {
+                              option.style.display = 'none';
+                          }
+                      }
+                      if (selectedIndex !== -1) {
+                          clienteSelect.selectedIndex = selectedIndex;
+                          clienteSelect.classList.remove('text-muted'); //remueve la clase que lo hace gris
+                      } else {
+                          clienteSelect.classList.add('text-muted'); //si no encuentra nada lo pone gris
+                      }
+                  });
+          
+                  clienteSelect.addEventListener('change', () => {
+                      selectedIndex = clienteSelect.selectedIndex; // actualiza el índice seleccionado
+                      clienteInput.value = clienteSelect.options[selectedIndex].text; // actualiza el valor del input con el valor seleccionado
+                  });
+              </script>
+          </div>
+          
+                     
             <div class="mb-3">
-                <label for="" class="form-label">Precio</label>
+                <label for="" class="form-label">Fecha</label>
                 <input type="text"
                   class="form-control" name="producto_precio" id="" aria-describedby="helpId" placeholder="Ejemplo: 25.50" step="0.01" min="0" pattern="[0-9]+([.][0-9]{0,2})?" maxlength="5" required>
                 <small id="helpId" class="form-text text-muted" style="display: block;">(!) Insertar valores de coma flotante</small>
