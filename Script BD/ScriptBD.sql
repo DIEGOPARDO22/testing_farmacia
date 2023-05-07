@@ -24,12 +24,13 @@ CREATE TABLE IF NOT EXISTS categoria(
 
 /*CREACTION DE TABLA FACTURA*/
 CREATE TABLE IF NOT EXISTS factura(
-    num_factura CHAR(5) NOT NULL,
+    num_factura SMALLINT NOT NULL AUTO_INCREMENT,
     ruc CHAR(11),
     fecha DATE,
     PRIMARY KEY (num_factura),
     FOREIGN KEY (ruc) REFERENCES cliente (ruc) ON UPDATE CASCADE ON DELETE SET NULL
 ) ENGINE=InnoDB;
+ALTER TABLE factura AUTO_INCREMENT=30000;
 
 /*CREACION DE TABLA PRODUCTO*/
 CREATE TABLE IF NOT EXISTS producto(
@@ -45,14 +46,15 @@ ALTER TABLE producto AUTO_INCREMENT=1000;
 
 /*CREACION DE TABLA DETALLE*/
 CREATE TABLE IF NOT EXISTS detalle(
-    num_detalle CHAR(5) NOT NULL,
-    id_factura CHAR(5) NOT NULL,
+    num_detalle SMALLINT NOT NULL AUTO_INCREMENT,
+    id_factura SMALLINT NOT NULL,
     id_producto SMALLINT,
     cantidad INT,
     PRIMARY KEY (num_detalle, id_factura),
-    FOREIGN KEY (id_factura) REFERENCES factura (num_factura),
-    FOREIGN KEY (id_producto) REFERENCES producto (id_producto) ON UPDATE CASCADE ON DELETE SET NULL
+    FOREIGN KEY (id_factura) REFERENCES factura (num_factura) ON UPDATE CASCADE ON DELETE CASCADE, 
+    FOREIGN KEY (id_producto) REFERENCES producto (id_producto) ON UPDATE CASCADE
 ) ENGINE=InnoDB;
+ALTER TABLE detalle AUTO_INCREMENT=2000;
 
 /*============================================================
                     INSERCIÓN DE DATOS
@@ -141,6 +143,13 @@ INSERT INTO producto(nombre, precio, stock, id_categoria) VALUES(in_nombre, in_p
 CREATE PROCEDURE `sp_crear_cliente`(IN in_ruc CHAR(11), IN in_razon VARCHAR(100), IN in_direccion VARCHAR(150), in_telefono CHAR(9), in_email VARCHAR(50))
 INSERT INTO cliente(ruc, nombresorazon, direccion, telefono, email) VALUES(in_ruc, in_razon, in_direccion, in_telefono, in_email);
 
+CREATE PROCEDURE `sp_crear_factura`(IN ruc CHAR(11), IN fecha DATE)
+INSERT INTO factura(ruc, fecha) VALUES(ruc, fecha);
+
+CREATE PROCEDURE `sp_crear_detalle`(in id_factura SMALLINT, in id_producto SMALLINT, in cantidad INT)
+INSERT INTO detalle(id_factura, id_producto, cantidad) VALUES(id_factura, id_producto, cantidad);
+
+
 /* =============================================================================================
 											EDITAR
 ============================================================================================= */ 
@@ -161,6 +170,9 @@ CREATE PROCEDURE `sp_eliminar_producto`(IN in_id_producto SMALLINT)
 DELETE FROM producto
 WHERE id_producto = in_id_producto;
 
+create procedure `sp_eliminar_factura`(IN in_id_factura SMALLINT)
+delete from bd_farmacia.factura where factura.num_factura=in_id_factura;
+
 CREATE PROCEDURE `sp_eliminar_cliente`(IN in_ruc_cliente CHAR(11))
 DELETE FROM cliente
 WHERE ruc = in_ruc_cliente;
@@ -173,4 +185,15 @@ SELECT producto.id_producto, producto.nombre, producto.precio, producto.stock, p
 FROM producto INNER JOIN categoria WHERE id_producto=in_id_producto AND producto.id_categoria=categoria.id_categoria;
 
 CREATE PROCEDURE `sp_buscar_cliente_por_id`(IN in_ruc_cliente CHAR(11))
-SELECT * FROM cliente WHERE in_ruc_cliente = cliente.ruc
+SELECT * FROM cliente WHERE in_ruc_cliente = cliente.ruc;
+
+/* =============================================================================================
+											MOSTRAR
+============================================================================================= */
+create procedure `sp_ver_factura`(IN a int ) 
+select * from bd_farmacia.producto;
+
+/* =============================================================================================
+											ULTIMA FACTURA
+============================================================================================= */
+create procedure `sp_ver_ultima_factura`() SELECT MAX(num_factura) FROM factura;
