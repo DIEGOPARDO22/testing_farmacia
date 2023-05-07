@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% block titulo %} Facturas {% endblock %}
+{% block contenido %}
+
+<br/>
+<br/>
+
+<div class="container">
+        <h1>Simulación de Factura</h1>
+        <div class="d-flex mb-3">
+            <div class="flex-fill "></div>
+            <div class=" flex-fill "></div>
+            <div class=" flex-fill">
+                <form>
+                    <div class="form-group">
+                        <label class="h3" for="nombre">FACTURA ELECTRONICA</label>
+                        <p>RUC: {{ruc}}</p>
+                    </div>
+                    <br>
+                    
+                </form>
+
+            
+            </div>
+        </div>
+        <div class="d-flex mb-3">
+            <div class="flex-fill ">
+                <p class="h5"> FARMACIA LAS ANTENAS</p>
+                <p class="h8"> {{direccion}}</p>
+                <hr>
+                <p class="h6">FECHA DE EMISION:</p>
+                <p>{{fecha_emision}}</p>
+                <p>RAZON SOCIAL:</p>
+                <p>{{razon_social}}</p>
+                <p class="h6">RUC</p>
+                <p>{{ruc_cliente}}</p>
+                <p class="h6">Tipo de Moneda</p>
+                <p>SOLES</p>
+                <p class="h6">DIRECCION</p>
+                <p>{{direccion_cliente}}</p>
+            
+            </div>
+            <div class=" flex-fill "></div>
+            <div class=" flex-fill"></div>
+        </div>
+        <div>
+            <table class="table mt-4">
+            <thead>
+                <tr>
+                    <th>Producto</th>
+                    <th>Cantidad</th>
+                    <th>Precio Unitario</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody >
+
+            </tbody>
+            </table>
+        </div>
+        <br>
+        <br>
+        <br>
+        <div class="d-flex mb-3">
+            <div class="flex-fill "></div>
+            <div class=" flex-fill "></div>
+            <div class=" flex-fill">
+                <p><b>Total valor venta </b> S/ {{total_neto}}</p>
+                <p><b>Descuento </b> S/ {{descuento}}</p>
+                <p><b>Total IGV (18%) </b> S/ {{total_neto*0.18}}</p>
+                <p><b>Importe total </b> S/ {{(total_neto)+(total_neto*0.18)}}</p>
+            </div>
+        </div>
+        <br>
+        <br>
+        <div class="d-flex mb-3">
+            <div class="flex-fill "></div>
+            <div class=" flex-fill ">
+                <a name="" id="" class="btn btn-danger" href="{%url 'clientes'%}" role="button">Volver</a>
+                <a name="" id="" class="btn btn-success" href="{%url 'productos'%}" role="button">Emitir factura</a>
+            </div>
+            <div class=" flex-fill"></div>
+        </div>
+        
+    </div>
+
+
+
+{% endblock %}
