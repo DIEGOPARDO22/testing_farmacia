@@ -50,7 +50,7 @@
                                         Este registro y sus registros relacionados en otras tablas se eliminarán. ¿Está seguro de querer continuar?
                                         </div>
                                         <div class="modal-footer">
-                                            <a name="" id="" class="btn btn-danger" href="" role="button">Borrar de todos modos</a>
+                                            <a name="" id="" class="btn btn-danger" href="{% url 'eliminar_facturas' row.0 %}" role="button">Borrar de todos modos</a>
                                         <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Cerrar</button>
                                         </div>
                                     </div>
@@ -63,7 +63,8 @@
             </table>
         </div>
         <div>
-            <a name="" id="" class="btn btn-success" href="{%url 'crear_producto'%}" role="button">Agregar factura</a>
+            <a name="" id="" class="btn btn-success" href="{%url 'crear_factura_y_detalle'%}" role="button">Agregar factura</a>
+
         </div>
     </div>
     
