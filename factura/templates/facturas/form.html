@@ -83,7 +83,7 @@
             {% else %}
             <div class="mb-3">
               <label for="cliente" class="form-label">Cliente</label>
-              <input type="text" class="form-control" name="cliente" id="cliente" pattern="[A-Za-z0-9\s]+" aria-describedby="helpId" maxlength="25" placeholder="Ejemplo: Sanofi S.A." value="{{data.0.1}}" required>
+              <input type="text" class="form-control" name="cliente" id="cliente" pattern="[A-Za-zÀ-ÿ0-9\s.,:;-]+" aria-describedby="helpId" maxlength="25" placeholder="Ejemplo: Sanofi S.A." value="{{data.0.1}}" required>
               <small id="helpId" class="form-text text-muted">(!) No usar caracteres especiales</small>
               <select class="form-select text-muted" aria-label="Default select example" name="cliente_select" id="cliente_select">
                   {% for r in ruc %}
@@ -125,62 +125,14 @@
                       clienteInput.value = clienteSelect.options[selectedIndex].text; // actualiza el valor del input con el valor seleccionado
                   });
               </script>
-          </div>
-          
-                     
-            <div class="mb-3">
-                <label for="" class="form-label">Fecha</label>
-                <input type="text"
-                  class="form-control" name="producto_precio" id="" aria-describedby="helpId" placeholder="Ejemplo: 25.50" step="0.01" min="0" pattern="[0-9]+([.][0-9]{0,2})?" maxlength="5" required>
-                <small id="helpId" class="form-text text-muted" style="display: block;">(!) Insertar valores de coma flotante</small>
-                <small id="helpId" class="form-text text-muted" style="display: block;">(!) Máximo 2 decimales</small>
             </div>
-
+             
             <div class="mb-3">
-                <label for="" class="form-label">Stock</label>
-                <input type="number"
-                  class="form-control" name="producto_stock" id="num-entero" aria-describedby="helpId" placeholder="Ejemplo: 150" maxlength="6" step="1" min="0" oninput="validarNumeroEntero(event)" required>
-                
-                  <script>
-                    var numEntero = document.getElementById("num-entero");
-
-                    numEntero.addEventListener("input", function() {
-                    if (numEntero.value.length > 5) {
-                        numEntero.value = numEntero.value.slice(0, 5); // Limita la cantidad de dígitos numéricos a 7
-                    }
-                    });
-
-                    function validarNumeroEntero(event) {
-                    const input = event.target;
-                    const valor = input.value.trim();
-                    
-                    // Reemplazamos cualquier punto decimal por una cadena vacía
-                    const valorEntero = valor.replace(".", "");
-                    
-                    // Validamos que el valor ingresado sea un número entero positivo
-                    if (/^[0-9]*$/.test(valorEntero) && Number(valorEntero) >= 0) {
-                        // Si el valor es válido, lo dejamos tal cual
-                        input.value = valorEntero;
-                    } else {
-                        // Si el valor no es válido, borramos el último caracter ingresado
-                        input.value = valor.slice(0, -1);
-                    }
-                    }
-                  </script>
-
-                <small id="helpId" class="form-text text-muted">(!) Sólo valores numéricos</small>
-            </div>
-
-            <div class="mb-3">
-                <label for="" class="form-label">Categoria</label>
-                <select class="form-select" aria-label="Default select example" name="ruc">
-                  <option value="{{ruc.0.0}}">{{categoria.0.1}}</option>
-                  <option value="{{ruc.1.0}}">{{categoria.1.1}}</option>
-                  <option value="{{ruc.2.0}}">{{categoria.2.1}}</option>
-                </select>
-
-                <small id="helpId" class="form-text text-muted">(!) Despliegue la lista para ver las categorías</small>
-            </div>
+              <label for="" class="form-label">Fecha</label>
+              <input type="text" class="form-control" name="fecha" id="" aria-describedby="helpId" placeholder="Ejemplo: 2022-01-15" pattern="\d{4}-\d{2}-\d{2}" maxlength="10" required>
+              <small id="helpId" class="form-text text-muted" style="display: block;">(!) Insertar fecha en formato AAAA-MM-DD</small>
+              
+            </div>                      
 
             <div class="justify-content-center">
                 <button type="submit" class="btn btn-primary">Ingresar</button>
