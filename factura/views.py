@@ -111,30 +111,62 @@ def facturas(req):
     return render(req, 'facturas/index.html', {'data': data})
 
 
-def crear_factura(req):
+# def crear_factura(req):
+#     cursor.execute('CALL sp_listar_clientes')
+#     cat = cursor.fetchall()
+#     if req.method == "POST":
+#         if req.POST.get("ruc") and req.POST.get("fecha"):
+#             ruc = req.POST.get("ruc")
+#             fecha = req.POST.get("fecha")
+#             cursor.execute("CALL sp_crear_factura('" +
+#                            ruc+"','"+fecha+"')")
+#             return redirect('facturas')
+#     return render(req, 'facturas/form.html', {'ruc': cat})
+
+
+# def crear_detalle(req):
+#     cursor.execute('CALL sp_listar_producto')
+#     cat = cursor.fetchall()
+#     cursor.execute('CALL sp_ver_ultima_factura')
+#     ultimo_num_factura  = cursor.fetchall()
+#     num_factura = ultimo_num_factura[0][0]
+#     if req.method == "POST":
+#         if req.POST.get("id_producto") and req.POST.get("cantidad"):
+#             id_producto = req.POST.get("id_producto")
+#             cantidad = req.POST.get("cantidad")
+#             cursor.execute("CALL sp_crear_detalle('" +
+#                            num_factura+"','"+id_producto+"','"+cantidad+"')")
+#             return redirect('facturas')
+#     return render(req, 'facturas/form.html', {'id_producto': cat})
+
+def crear_factura_y_detalle(req):
     cursor.execute('CALL sp_listar_clientes')
-    cat = cursor.fetchall()
-    if req.method == "POST":
-        if req.POST.get("ruc") and req.POST.get("fecha"):
-            ruc = req.POST.get("ruc")
-            fecha = req.POST.get("fecha")
-            cursor.execute("CALL sp_crear_factura('" +
-                           ruc+"','"+fecha+"')")
-            return redirect('facturas')
-    return render(req, 'facturas/form.html', {'ruc': cat})
-
-
-def crear_detalle(req):
+    clientes_lista = cursor.fetchall()
     cursor.execute('CALL sp_listar_producto')
-    cat = cursor.fetchall()
+    productos_lista = cursor.fetchall()
+    cursor.execute('CALL sp_ver_ultima_factura')
+    ultimo_num_factura  = cursor.fetchall()
+    num_factura = ultimo_num_factura[0][0]
+
     if req.method == "POST":
+        # Manejar la creación de la factura
         if req.POST.get("ruc") and req.POST.get("fecha"):
             ruc = req.POST.get("ruc")
             fecha = req.POST.get("fecha")
-            cursor.execute("CALL sp_crear_detalle('" +
-                           ruc+"','"+fecha+"')")
-            return redirect('facturas')
-    return render(req, 'facturas/form.html', {'ruc': cat})
+            cursor.execute("CALL sp_crear_factura('" + ruc + "','" + fecha + "')")
+            # Manejar la creación del detalle
+            if req.POST.get("id_producto") and req.POST.get("cantidad"):
+                id_producto = req.POST.get("id_producto")
+                cantidad = req.POST.get("cantidad")
+                cursor.execute("CALL sp_crear_detalle('" + num_factura + "','" + id_producto + "','" + cantidad + "')")
+                return redirect('facturas')
+            else:
+                return redirect('crear_factura_y_detalle')
+        else:
+            return redirect('crear_factura_y_detalle')
+    else:
+        return render(req, 'facturas/form.html', {'ruc': clientes_lista, 'id_producto': productos_lista})
+
 
 def eliminar_facturas(req, id):
     cursor.execute("call sp_eliminar_factura('"+id+"')")
