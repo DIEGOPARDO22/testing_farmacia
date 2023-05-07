@@ -143,10 +143,13 @@ def facturas(req):
 def crear_factura_y_detalle(req):
     cursor.execute('CALL sp_listar_clientes')
     clientes_lista = cursor.fetchall()
+
     cursor.execute('CALL sp_listar_producto')
     productos_lista = cursor.fetchall()
+
     cursor.execute('CALL sp_ver_ultima_factura')
     ultimo_num_factura  = cursor.fetchall()
+    
     num_factura = ultimo_num_factura[0][0]
 
     if req.method == "POST":
