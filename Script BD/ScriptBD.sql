@@ -9,9 +9,8 @@ CREATE TABLE IF NOT EXISTS cliente(
     ruc CHAR(11) NOT NULL,
     nombresorazon VARCHAR(100) NOT NULL,
     direccion VARCHAR(150),
-    fecha_nacimiento DATE,
     telefono CHAR(9),
-    email VARCHAR(25),
+    email VARCHAR(50),
     PRIMARY KEY (ruc) 
 ) ENGINE=InnoDB;
 
@@ -29,7 +28,7 @@ CREATE TABLE IF NOT EXISTS factura(
     ruc CHAR(11),
     fecha DATE,
     PRIMARY KEY (num_factura),
-    FOREIGN KEY (ruc) REFERENCES cliente (ruc)
+    FOREIGN KEY (ruc) REFERENCES cliente (ruc) ON UPDATE CASCADE ON DELETE SET NULL
 ) ENGINE=InnoDB;
 
 /*CREACION DE TABLA PRODUCTO*/
@@ -60,17 +59,17 @@ CREATE TABLE IF NOT EXISTS detalle(
 ============================================================*/
 
 /*INSERCION EN TABLA CLIENTE*/
-INSERT INTO cliente (ruc, nombresorazon, direccion,fecha_nacimiento, telefono, email) VALUES
-(90453612111, 'Pfizer Inc.', 'Calle Los Pinos #123, Urbanización Las Casuarinas, Arequipa', '1997-12-03', '998765432', 'srodriguez@gmail.com'),
-(23657849222, 'Novartis AG.', 'Avenida Dolores #456, Urbanización Los Cedros, Yanahuara, Arequipa', '1995-06-21', '995678521', 'ahernandez@hotmail.com'),
-(75891236333, 'Johnson & Johnson', 'Calle Francisco Bolognesi #678, Urbanización Las Condes, Sachaca, Arequipa', '1999-09-05', '954221345', 'vcastro@gmail.com'),
-(12345678444, 'Umbrella Corporation', 'Calle Mariscal Castilla #210, Distrito De Challapampa, Arequipa', '2000-11-17', '994536187', 'dgarcia@hotmail.com'),
-(89765432555, 'AstraZeneca plc.', 'Avenida Ejercito #1234, Urbanización Vila Real, Cayma, Arequipa', '2002-04-02', '958765432', 'pmartinez@hotmail.com'),
-(65412789666, 'Boehringer Ingelheim', 'Calle Lima #567, Urbanización San Lazaro, Arequipa', '1996-08-28', '948765212', 'jgonzalez@gmail.com'),
-(43219876777, 'Roche Holding AG', 'Avenida Andres Avelino Caceres #890, Distrito De Hunter, Arequipa', '1998-02-14', '955678123', 'ndiaz@hotmail.com'),
-(56473829888, 'Eli Lilly and Company', 'Calle Avenida De La Cultura #456, Urbanización Las Vizcachas, Arequipa', '2001-05-30', '948635184', 'ahernandez@gmail.com'),
-(21897543999, 'Sanofi S.A.', 'Avenida La Marina #789, Distrito De Cerro Colorado, Arequipa', '1995-10-11', '955786123', 'kperez@hotmail.com'),
-(98765431101, 'Merck & Co., Inc.', 'Calle Juanita #234, Urbanización Los Pinos, Arequipa', '2003-07-07', '998734123', 'mreyes@gmail.com');
+INSERT INTO cliente (ruc, nombresorazon, direccion, telefono, email) VALUES
+(90453612111, 'Pfizer Inc.', 'Calle Los Pinos #123, Urbanización Las Casuarinas, Arequipa', '998765432', 'srodriguez@gmail.com'),
+(23657849222, 'Novartis AG.', 'Avenida Dolores #456, Urbanización Los Cedros, Yanahuara, Arequipa', '995678521', 'ahernandez@hotmail.com'),
+(75891236333, 'Johnson & Johnson', 'Calle Francisco Bolognesi #678, Urbanización Las Condes, Sachaca, Arequipa', '954221345', 'vcastro@gmail.com'),
+(12345678444, 'Umbrella Corporation', 'Calle Mariscal Castilla #210, Distrito De Challapampa, Arequipa', '994536187', 'dgarcia@hotmail.com'),
+(89765432555, 'AstraZeneca plc.', 'Avenida Ejercito #1234, Urbanización Vila Real, Cayma, Arequipa', '958765432', 'pmartinez@hotmail.com'),
+(65412789666, 'Boehringer Ingelheim', 'Calle Lima #567, Urbanización San Lazaro, Arequipa', '948765212', 'jgonzalez@gmail.com'),
+(43219876777, 'Roche Holding AG', 'Avenida Andres Avelino Caceres #890, Distrito De Hunter, Arequipa', '955678123', 'ndiaz@hotmail.com'),
+(56473829888, 'Eli Lilly and Company', 'Calle Avenida De La Cultura #456, Urbanización Las Vizcachas, Arequipa', '948635184', 'ahernandez@gmail.com'),
+(21897543999, 'Sanofi S.A.', 'Avenida La Marina #789, Distrito De Cerro Colorado, Arequipa', '955786123', 'kperez@hotmail.com'),
+(98765431101, 'Merck & Co., Inc.', 'Calle Juanita #234, Urbanización Los Pinos, Arequipa', '998734123', 'mreyes@gmail.com');
 
 INSERT INTO categoria (id_categoria, nombre, descripcion) VALUES
 ('001', 'Medicamentos', 'Productos para el tratamiento de enfermedades'),
@@ -113,12 +112,6 @@ INSERT INTO detalle (num_detalle, id_factura, id_producto, cantidad) VALUES
 ('00009', '00005', '1001', 1),
 ('00010', '00005', '1003', 2);
 
-SELECT * FROM cliente;
-SELECT * FROM categoria;
-SELECT * FROM factura;
-SELECT * FROM producto;
-SELECT * FROM detalle;
-
 /* =============================================================================================
 											LISTAR
 ============================================================================================= */ 
@@ -142,9 +135,11 @@ FROM categoria;
 /* =============================================================================================
 											CREAR
 ============================================================================================= */ 
-
 CREATE PROCEDURE `sp_crear_producto`(IN in_nombre VARCHAR(25), IN in_precio DOUBLE, IN in_stock INT, IN in_id_categoria CHAR(3))
 INSERT INTO producto(nombre, precio, stock, id_categoria) VALUES(in_nombre, in_precio, in_stock, in_id_categoria);
+
+CREATE PROCEDURE `sp_crear_cliente`(IN in_ruc CHAR(11), IN in_razon VARCHAR(100), IN in_direccion VARCHAR(150), in_telefono CHAR(9), in_email VARCHAR(50))
+INSERT INTO cliente(ruc, nombresorazon, direccion, telefono, email) VALUES(in_ruc, in_razon, in_direccion, in_telefono, in_email);
 
 /* =============================================================================================
 											EDITAR
@@ -154,6 +149,11 @@ UPDATE producto
 SET nombre=in_nombre, precio=in_precio, stock=in_stock, id_categoria=in_id_categoria
 WHERE id_producto=in_id_producto;
 
+CREATE PROCEDURE `sp_editar_cliente`(IN in_ruc CHAR(11), IN in_razon VARCHAR(100), IN in_direccion VARCHAR(150), IN in_telefono CHAR(9), IN in_email VARCHAR(50))
+UPDATE cliente
+SET ruc=in_ruc, nombresorazon=in_razon, direccion=in_direccion, telefono=in_telefono, email=in_email
+WHERE ruc = in_ruc;
+
 /* =============================================================================================
 											BORRAR
 ============================================================================================= */ 
@@ -161,6 +161,9 @@ CREATE PROCEDURE `sp_eliminar_producto`(IN in_id_producto SMALLINT)
 DELETE FROM producto
 WHERE id_producto = in_id_producto;
 
+CREATE PROCEDURE `sp_eliminar_cliente`(IN in_ruc_cliente CHAR(11))
+DELETE FROM cliente
+WHERE ruc = in_ruc_cliente;
 
 /* =============================================================================================
 											BUSCAR
@@ -168,3 +171,6 @@ WHERE id_producto = in_id_producto;
 CREATE PROCEDURE `sp_buscar_producto_por_id` (IN in_id_producto SMALLINT)
 SELECT producto.id_producto, producto.nombre, producto.precio, producto.stock, producto.id_categoria, categoria.nombre
 FROM producto INNER JOIN categoria WHERE id_producto=in_id_producto AND producto.id_categoria=categoria.id_categoria;
+
+CREATE PROCEDURE `sp_buscar_cliente_por_id`(IN in_ruc_cliente CHAR(11))
+SELECT * FROM cliente WHERE in_ruc_cliente = cliente.ruc

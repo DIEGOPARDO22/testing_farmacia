@@ -70,19 +70,35 @@ def clientes(req):
 
 def crear_cliente(req):
     if req.method == "POST":
-        if req.POST.get("id_cliente") and req.POST.get("nombres") and req.POST.get("apellidos") and req.POST.get("direccion") and req.POST.get("fecha_nacimiento") and req.POST.get("telefono") and req.POST.get("email"):
-            id_cliente = req.POST.get("id_cliente")
-            nombres = req.POST.get("nombres")
-            apellidos = req.POST.get("apellidos")
-            direccion = req.POST.get("direccion")
-            fecha_nacimiento = req.POST.get("fecha_nacimiento")
-            telefono = req.POST.get("telefono")
-            email = req.POST.get("email")
+        if req.POST.get("cliente_ruc") and req.POST.get("cliente_razon") and req.POST.get("cliente_direccion") and req.POST.get("cliente_telefono") and req.POST.get("cliente_email"):
+            ruc = req.POST.get("cliente_ruc")
+            razon = req.POST.get("cliente_razon")
+            direccion = req.POST.get("cliente_direccion")
+            telefono = req.POST.get("cliente_telefono")
+            email = req.POST.get("cliente_email")
 
-            cursor.execute("CALL sp_crear_producto('"+id_cliente+"','"+nombres+"','"+apellidos +
-                           "','"+direccion+"','"+fecha_nacimiento+"','"+telefono+"','"+email+"')")
+            cursor.execute("CALL sp_crear_cliente('"+ruc+"','"+razon+"','"+direccion+"','"+telefono+"','"+email+"')")
             return redirect('clientes')
     return render(req, 'clientes/form.html')
+
+def editar_cliente(req, id):
+    cursor.execute("CALL sp_buscar_cliente_por_id('"+id+"')")
+    data = cursor.fetchall()
+    if req.method == "POST":
+        if req.POST.get("cliente_ruc") and req.POST.get("cliente_razon") and req.POST.get("cliente_direccion") and req.POST.get("cliente_telefono") and req.POST.get("cliente_email"):
+            ruc = req.POST.get("cliente_ruc")
+            razon = req.POST.get("cliente_razon")
+            direccion = req.POST.get("cliente_direccion")
+            telefono = req.POST.get("cliente_telefono")
+            email = req.POST.get("cliente_email")
+
+            cursor.execute("CALL sp_editar_cliente('"+ruc+"','"+razon+"','"+direccion+"','"+telefono+"','"+email+"')")
+            return redirect('clientes')
+    return render(req, 'clientes/form.html',{'data':data})
+
+def eliminar_cliente(req, id):
+    cursor.execute("CALL sp_eliminar_cliente('"+id+"')")
+    return redirect('clientes')
 
 
 # ================================================================
