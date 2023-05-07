@@ -32,6 +32,7 @@ def crear_producto(req):
             return redirect('productos')
     return render(req, 'productos/form.html', {'categoria': cat})
 
+
 def editar_producto(req, id):
     cursor.execute("CALL sp_buscar_producto_por_id('"+id+"')")
     data = cursor.fetchall()
@@ -105,3 +106,8 @@ def crear_factura(req):
                            num_factura+"','"+id_cliente+"','"+fecha+"')")
             return redirect('facturas')
     return render(req, 'facturas/form.html')
+
+def eliminar_facturas(req, id):
+    cursor.execute("call sp_eliminar_factura('"+id+"')")
+    return redirect ('facturas')
+    
