@@ -18,6 +18,6 @@ urlpatterns = [
     
     # FACTURAS
     path('facturas', views.facturas, name='facturas'),
-    path('facturas/crear-factura', views.crear_factura, name='crear-factura'),
+    path('facturas/crear-factura', views.crear_factura, name='crear_factura'),
 
 ]
