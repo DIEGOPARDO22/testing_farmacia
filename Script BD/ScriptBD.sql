@@ -187,6 +187,13 @@ FROM producto INNER JOIN categoria WHERE id_producto=in_id_producto AND producto
 CREATE PROCEDURE `sp_buscar_cliente_por_id`(IN in_ruc_cliente CHAR(11))
 SELECT * FROM cliente WHERE in_ruc_cliente = cliente.ruc;
 
+CREATE PROCEDURE `sp_buscar_factura_por_id`(IN in_id_factura SMALLINT)
+SELECT factura.num_factura, factura.ruc, factura.fecha, detalle.id_producto, detalle.cantidad
+FROM factura INNER JOIN detalle
+WHERE factura.num_factura = detalle. id_factura AND factura.num_factura=in_id_factura;
+
+call sp_buscar_factura_por_id(00001);
+
 /* =============================================================================================
 											MOSTRAR
 ============================================================================================= */

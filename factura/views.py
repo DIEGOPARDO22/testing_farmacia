@@ -132,7 +132,6 @@ def crear_factura_y_detalle(req):
     else:
         return render(req, 'facturas/form.html', {'ruc': clientes_lista, 'id_producto': productos_lista})
 
-
 def eliminar_facturas(req, id):
     cursor.execute("call sp_eliminar_factura('"+id+"')")
     return redirect ('facturas')
