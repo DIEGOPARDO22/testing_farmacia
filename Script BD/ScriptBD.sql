@@ -51,8 +51,8 @@ CREATE TABLE IF NOT EXISTS detalle(
     id_producto SMALLINT,
     cantidad INT,
     PRIMARY KEY (num_detalle, id_factura),
-    FOREIGN KEY (id_factura) REFERENCES factura (num_factura) ON UPDATE CASCADE ON DELETE CASCADE, 
-    FOREIGN KEY (id_producto) REFERENCES producto (id_producto) ON UPDATE CASCADE
+    FOREIGN KEY (id_factura) REFERENCES factura (num_factura), 
+	FOREIGN KEY (id_producto) REFERENCES producto (id_producto) 
 ) ENGINE=InnoDB;
 ALTER TABLE detalle AUTO_INCREMENT=2000;
 

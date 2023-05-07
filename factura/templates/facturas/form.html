@@ -149,54 +149,15 @@
                       <tr>
                           <th scope="col">Cantidad</th>
                           <th scope="col">Descripción</th>
-                          <th scope="col">Valor de venta</th>
                           <th scope="col"></th>
                       </tr>
                   </thead>
 
                   <tbody>
-                      <!-- <tr>
-                        <td>
-                          <input type="text"
-                              class="form-control" name="cantidad" id="cantidad" aria-describedby="helpId" maxlength="3" required>
-                              <script>
-                                const cantidad = document.getElementById('cantidad');
-            
-                                cantidad.addEventListener('input', function() {
-                                this.value = this.value.replace(/[^0-9]/g, ''); // Remover caracteres no numéricos
-                                });
-                              </script>
-                        </td>
-                        <td>
-                          <select class="form-select text-muted" aria-label="Default select example" name="id_producto" id="id_producto">
-                          {% for r in id_producto %}
-                          <option value="{{ r.0 }}">{{ r.1 }} - Precio Unitario: {{r.2}} Soles</option>
-                          {% endfor %}
-                          </select>
-                        </td>
-                      </tr> -->
+
                   </tbody>
               </table>
               <script>
-                // const btnAddRow = document.querySelector('#btn-add-row');
-                // const tableDetalle = document.querySelector('#table-detalle');
-            
-                // btnAddRow.addEventListener('click', () => {
-                //     const newRow = tableDetalle.insertRow(-1);
-                //     const cell1 = newRow.insertCell(0);
-                //     const cell2 = newRow.insertCell(1);
-                //     const cell3 = newRow.insertCell(2);
-                    
-                //     cell1.innerHTML = 'Nuevo producto';
-                //     cell2.innerHTML = '1';
-                //     cell3.innerHTML = '$100';
-                // });
-
-                
-                
-
-
-
                 // Obtener la tabla y el botón para agregar filas
                 const tabla = document.querySelector('#table-detalle');
                 const botonAgregarFila = document.querySelector('#btn-add-row');
@@ -209,21 +170,19 @@
                   // Agregar las celdas de cantidad y producto
                   nuevaFila.innerHTML = `
                     <td>
-                      <input type="text" class="form-control" name="cantidad" pattern="[0-9]" maxlength="3" required>
+                      <input type="text" class="form-control" name="cantidad[]" maxlength="3" required>
                     </td>
                     <td>
-                      <select class="form-select text-muted" name="id_producto">
+                      <select class="form-select text-muted" name="id_producto[]">
                         {% for r in id_producto %}
-                        <option value="{{ r.0 }}">{{ r.1 }} - Precio Unitario: {{r.2}} Soles</option>
+                        <option value="{{ r.0 }}">{{ r.1 }} | Precio Unitario: {{r.2}}</option>
                         {% endfor %}
                       </select>
                     </td>
                     <td>
-                      <input type="text" class="form-control" name="precio_total" disabled>
-                    </td>
-                    <td>
                       <button class="btn btn-succes" type="button">Eliminar</button>
                     </td>
+                    <script></<script>
                   `;
 
                   // Agregar la nueva fila a la tabla
@@ -238,15 +197,8 @@
 
                 // Agregar un evento de click al botón para agregar filas
                 botonAgregarFila.addEventListener('click', crearFila);
-
-
-
-                
               </script>
-            
             </div>
-          
-
             <div class="justify-content-center">
                 <button type="submit" class="btn btn-primary">Ingresar</button>
                 <a name="" id="" class="btn btn-danger" href="{% url 'facturas' %}" role="button">Cancelar</a>
