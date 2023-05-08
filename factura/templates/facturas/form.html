@@ -17,13 +17,9 @@
             {% else %}
             <div class="mb-3">
               <label for="cliente" class="form-label">Cliente</label>
-              <input type="text" class="form-control" name="cliente" id="cliente" pattern="[A-Za-zÀ-ÿ0-9\s.,:;-]+" aria-describedby="helpId" maxlength="25" placeholder="Búsqueda de Cliente" required>
-              <script>
-                const input = document.getElementById('cliente');
-                input.addEventListener('input', function() {
-                this.value = this.value.replace(/[^\w\s\.\,\&\"]/gi, ''); // Remover caracteres no permitidos
-                });
-              </script>
+              <input type="text" class="form-control" name="cliente" id="cliente" pattern="[A-Za-zÀ-ÿ\s]+" aria-describedby="helpId" maxlength="25" placeholder="Búsqueda de Cliente" required>
+            </div>
+            
               <select class="form-select text-muted" aria-label="Default select example" name="ruc" id="ruc">
                 {% for r in ruc %}
                 <option value="{{ r.0 }}">{{ r.1 }}</option>
