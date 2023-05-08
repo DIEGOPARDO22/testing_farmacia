@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+{% block titulo %} Facturas {% endblock %}
+{% block contenido %}
+
+<br/>
+<br/>
+
+<div class="container">
+        <h1>Simulación de Factura</h1>
+        <div class="d-flex mb-3">
+            <div class="flex-fill "></div>
+            <div class=" flex-fill "></div>
+            <div class=" flex-fill">
+                <form>
+                    <div class="form-group">
+                        <label class="h3" for="nombre">FACTURA ELECTRONICA</label>
+                        <p>RUC: {{data.0.0}}</p>
+                    </div>
+                    <br>                   
+                </form>
+            </div>
+        </div>
+        <div class="d-flex mb-3">
+            <div class="flex-fill ">
+                <p class="h5"> FARMACIA LAS ANTENAS</p>
+                <hr>
+                <p class="h6"><br> <b>FECHA DE EMISION:</b><br></p>
+                <p>{{data.0.1}}</p>
+                <p><br><b>RAZON SOCIAL:</b><br></p>
+                <p>{{data.0.2}}</p>
+                <p class="h6"><br><b>RUC </b><br></p>
+                <p>{{data.0.3}}</p>
+                <p class="h6"><br><b>Tipo de Moneda</b> <br></p>
+                <p>SOLES</p>
+                <p class="h6"><br><b>DIRECCION</b> <br></p>
+                <p>{{data.0.7}}</p>
+        
+            </div>
+            <div class=" flex-fill "></div>
+            <div class=" flex-fill"></div>
+        </div>
+        <div>
+            <table class="table mt-4">
+                <thead>
+                    <tr>
+                        <th>Producto</th>
+                        <th>Cantidad</th>
+                        <th>Precio Unitario</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in nuevos_datos %}
+                    <tr class="">
+                        <td scope="row">{{ row.4 }}</td>
+                        <td>{{ row.5 }}</td>
+                        <td>{{ row.6 }}</td>
+                        <td>{{row.7}}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <br>
+        <div class="d-flex mb-3 align-self-end">
+            <div class="flex-fill "></div>
+            <div class=" flex-fill "></div>
+            <div class=" flex-fill">
+                <p><b>Total valor venta </b> S/ {{suma_total_venta}}</p>
+                <p><b>Descuento </b> S/ {{suma_total_descuento}}</p>
+                <p><b>Total IGV (18%) </b> S/ {{suma_total_igv}}</p>
+                <p><b>Importe total </b> S/ {{suma_importe_total}}</p>
+            </div>
+        </div>
+        <br>
+        <div class="d-flex mb-3">
+            <div class="flex-fill "></div>
+            <div class=" flex-fill ">
+
+                <form method="POST" action="{% url 'print_fact' %}">
+                {% csrf_token %}
+                    <button type="submit" class="btn btn-success">Emitir factura</button>
+                    <a name="" id="" class="btn btn-danger" href="{%url 'facturas'%}" role="button">Volver</a>
+                </form>                
+            </div>
+            <div class=" flex-fill"></div>
+        </div>
+    </div>
+    <br>
+    <br>
+{% endblock %}

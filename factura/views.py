@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect
 from django.db import connection
-
+import pyautogui
+import time
 cursor = connection.cursor()  # cursor
-
 def inicio(req):
     return render(req, 'inicio.html')
 
@@ -24,8 +24,7 @@ def crear_producto(req):
             precio = req.POST.get("producto_precio")
             stock = req.POST.get("producto_stock")
             categoria = req.POST.get("producto_categoria")
-
-            cursor.execute("CALL sp_crear_producto('"+nombre+"','"+precio+"','"+stock+"','"+categoria+"')")
+            cursor.execute("CALL sp_crear_producto('"+nombre+"','"+(precio)+"','"+stock+"','"+categoria+"')")
             return redirect('productos')
     return render(req, 'productos/form.html', {'categoria': cat})
 
@@ -135,4 +134,34 @@ def crear_factura_y_detalle(req):
 def eliminar_facturas(req, id):
     cursor.execute("call sp_eliminar_factura('"+id+"')")
     return redirect ('facturas')
-    
+def ver_factura(req, id):
+    cursor.execute("call sp_ver_factura(%s)", (id,))
+    data = cursor.fetchall()
+    print("esta es la data:", data)
+    nuevos_datos = []
+    suma_importe_total = 0
+    suma_total_venta = 0
+    suma_total_igv = 0
+    suma_total_descuento = 0# initialize the variable outside the for loop
+    for d in data:
+        total_venta = float(d[6]) * int(d[5])
+        descuento = total_venta * 0.01
+        total_igv = total_venta * 0.18
+        importe_total = total_venta + total_igv - descuento
+        suma_importe_total += importe_total  # add the value to the variable
+        suma_total_venta += total_venta
+        suma_total_igv += total_igv # add the value to the variable
+        suma_total_descuento += descuento # add the value to the variable
+        nuevos_datos.append((d[0], d[1], d[2], d[3], d[4], d[5], d[6], importe_total))
+    print(nuevos_datos)
+    return render(req, 'facturas/preliminar.html', {'data': data, 'suma_total_igv': suma_total_igv, 'suma_importe_total': suma_importe_total, 'suma_total_descuento': suma_total_descuento, 'suma_total_venta': suma_total_venta, 'nuevos_datos': nuevos_datos})
+
+
+
+def print_fact(req):
+    try:
+        pyautogui.hotkey('ctrl', 'p')
+        time.sleep(300)
+        return render(req, 'inicio.html')
+    except Exception as e:
+        print(f"Error: {e}")
