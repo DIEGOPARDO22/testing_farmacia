@@ -32,7 +32,7 @@ CREATE TABLE IF NOT EXISTS factura(
     PRIMARY KEY (num_factura),
     FOREIGN KEY (ruc) REFERENCES cliente (ruc) ON UPDATE CASCADE ON DELETE SET NULL
 ) ENGINE=InnoDB;
-ALTER TABLE factura AUTO_INCREMENT=30000;
+ALTER TABLE factura AUTO_INCREMENT=30001;
 
 /*CREACION DE TABLA PRODUCTO*/
 CREATE TABLE IF NOT EXISTS producto(
@@ -44,7 +44,7 @@ CREATE TABLE IF NOT EXISTS producto(
     PRIMARY KEY (id_producto),
     FOREIGN KEY (id_categoria) REFERENCES categoria (id_categoria)
 ) ENGINE=InnoDB;
-ALTER TABLE producto AUTO_INCREMENT=1000;
+ALTER TABLE producto AUTO_INCREMENT=1001;
 
 /*CREACION DE TABLA DETALLE*/
 CREATE TABLE IF NOT EXISTS detalle(
@@ -56,7 +56,7 @@ CREATE TABLE IF NOT EXISTS detalle(
     FOREIGN KEY (id_factura) REFERENCES factura (num_factura),
     FOREIGN KEY (id_producto) REFERENCES producto (id_producto) ON UPDATE CASCADE ON DELETE SET NULL
 ) ENGINE=InnoDB;
-ALTER TABLE detalle AUTO_INCREMENT=2000;
+ALTER TABLE detalle AUTO_INCREMENT=20001;
 
 /*============================================================
                     INSERCIÓN DE DATOS
@@ -80,17 +80,17 @@ INSERT INTO categoria (id_categoria, nombre, descripcion) VALUES
 ('002', 'Cuidado Personal', 'Productos para la higiene y cuidado personal'),
 ('003', 'Vitaminas y Suplementos', 'Productos para complementar la alimentación');
 
-INSERT INTO factura (num_factura, ruc, fecha) VALUES
-('00001', 90453612111, '2022-01-15'),
-('00002', 23657849222, '2022-01-15'),
-('00003', 75891236333, '2022-01-16'),
-('00004', 12345678444, '2022-01-17'),
-('00005', 89765432555, '2022-01-17'),
-('00006', 65412789666, '2022-01-18'),
-('00007', 43219876777, '2022-01-19'),
-('00008', 56473829888, '2022-01-20'),
-('00009', 21897543999, '2022-01-20'),
-('00010', 98765431101, '2022-01-21');
+INSERT INTO factura (ruc, fecha) VALUES
+(90453612111, '2022-01-15'),
+(23657849222, '2022-01-15'),
+(75891236333, '2022-01-16'),
+(12345678444, '2022-01-17'),
+(89765432555, '2022-01-17'),
+(65412789666, '2022-01-18'),
+(43219876777, '2022-01-19'),
+(56473829888, '2022-01-20'),
+(21897543999, '2022-01-20'),
+(98765431101, '2022-01-21');
 
 INSERT INTO producto (nombre, precio, stock, id_categoria) VALUES
 ('Paracetamol', 3.50, 500, '001'),
@@ -106,17 +106,17 @@ INSERT INTO producto (nombre, precio, stock, id_categoria) VALUES
 
 
 
-INSERT INTO detalle (num_detalle, id_factura, id_producto, cantidad) VALUES
-('00001', '00001', '1001', 2),
-('00002', '00001', '1003', 1),
-('00003', '00002', '1002', 3),
-('00004', '00003', '1005', 2),
-('00005', '00003', '1006', 1),
-('00006', '00003', '1007', 1),
-('00007', '00004', '1002', 1),
-('00008', '00004', '1004', 1),
-('00009', '00005', '1001', 1),
-('00010', '00005', '1003', 2);
+INSERT INTO detalle (id_factura, id_producto, cantidad) VALUES
+('30001', '1001', 2),
+('30002', '1003', 1),
+('30003', '1002', 3),
+('30001', '1005', 2),
+('30005', '1006', 1),
+('30001', '1007', 1),
+('30007', '1002', 1),
+('30008', '1004', 1),
+('30009', '1001', 1),
+('30008', '1003', 2);
 
 SELECT * FROM cliente;
 SELECT * FROM categoria;
@@ -207,13 +207,16 @@ call sp_buscar_factura_por_id(00001);
 											MOSTRAR
 ============================================================================================= */
 
-create procedure `sp_ver_factura`(IN num_fac smallint)
-SELECT factura.num_factura, factura.fecha, cliente.nombresorazon, cliente.ruc, producto.nombre, detalle.cantidad, producto.precio, cliente.direccion
+CREATE PROCEDURE `sp_ver_factura`(IN num_fac SMALLINT)
+SELECT DISTINCT factura.num_factura, factura.fecha, cliente.nombresorazon, cliente.ruc, producto.nombre, detalle.cantidad, producto.precio, cliente.direccion
 FROM detalle
 INNER JOIN factura ON factura.num_factura = detalle.id_factura
 INNER JOIN cliente ON cliente.ruc = factura.ruc
-INNER JOIN producto ON producto.id_producto = detalle.id_producto where
-factura.num_factura=num_fac;
+INNER JOIN producto ON producto.id_producto = detalle.id_producto WHERE
+factura.num_factura = num_fac;
+
+select * from factura;
+call sp_ver_factura (30001);
 /* =============================================================================================
 											ULTIMA FACTURA
 ============================================================================================= */

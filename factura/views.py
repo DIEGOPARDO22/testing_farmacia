@@ -138,7 +138,7 @@ def ver_factura(req, id):
     cursor.execute("call sp_ver_factura(%s)", (id,))
     data = cursor.fetchall()
     print("esta es la data:", data)
-    total_venta = float(data[0][6])
+    total_venta = float(data[0][6]) * int(data[0][5])
     descuento = total_venta * 0.01
     total_igv = total_venta * 0.18
     importe_total = total_venta + total_igv -descuento
