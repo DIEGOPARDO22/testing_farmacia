@@ -62,8 +62,6 @@ ALTER TABLE detalle AUTO_INCREMENT=2000;
                     INSERCIÓN DE DATOS
 ============================================================*/
 
-
-
 /*INSERCION EN TABLA CLIENTE*/
 INSERT INTO cliente (ruc, nombresorazon, direccion,fecha_nacimiento, telefono, email) VALUES
 (90453612111, 'Pfizer Inc.', 'Calle Los Pinos #123, Urbanización Las Casuarinas, Arequipa', '1997-12-03', '998765432', 'srodriguez@gmail.com'),
