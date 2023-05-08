@@ -10,9 +10,8 @@ CREATE TABLE IF NOT EXISTS cliente(
     ruc CHAR(11) NOT NULL,
     nombresorazon VARCHAR(100) NOT NULL,
     direccion VARCHAR(150),
-    fecha_nacimiento DATE,
     telefono CHAR(9),
-    email VARCHAR(25),
+    email VARCHAR(50),
     PRIMARY KEY (ruc) 
 ) ENGINE=InnoDB;
 
@@ -53,7 +52,7 @@ CREATE TABLE IF NOT EXISTS detalle(
     id_producto SMALLINT,
     cantidad INT,
     PRIMARY KEY (num_detalle, id_factura),
-    FOREIGN KEY (id_factura) REFERENCES factura (num_factura),
+    FOREIGN KEY (id_factura) REFERENCES factura (num_factura) ON UPDATE CASCADE ON DELETE CASCADE,
     FOREIGN KEY (id_producto) REFERENCES producto (id_producto) ON UPDATE CASCADE ON DELETE SET NULL
 ) ENGINE=InnoDB;
 ALTER TABLE detalle AUTO_INCREMENT=20001;
@@ -63,17 +62,17 @@ ALTER TABLE detalle AUTO_INCREMENT=20001;
 ============================================================*/
 
 /*INSERCION EN TABLA CLIENTE*/
-INSERT INTO cliente (ruc, nombresorazon, direccion,fecha_nacimiento, telefono, email) VALUES
-(90453612111, 'Pfizer Inc.', 'Calle Los Pinos #123, Urbanización Las Casuarinas, Arequipa', '1997-12-03', '998765432', 'srodriguez@gmail.com'),
-(23657849222, 'Novartis AG.', 'Avenida Dolores #456, Urbanización Los Cedros, Yanahuara, Arequipa', '1995-06-21', '995678521', 'ahernandez@hotmail.com'),
-(75891236333, 'Johnson & Johnson', 'Calle Francisco Bolognesi #678, Urbanización Las Condes, Sachaca, Arequipa', '1999-09-05', '954221345', 'vcastro@gmail.com'),
-(12345678444, 'Umbrella Corporation', 'Calle Mariscal Castilla #210, Distrito De Challapampa, Arequipa', '2000-11-17', '994536187', 'dgarcia@hotmail.com'),
-(89765432555, 'AstraZeneca plc.', 'Avenida Ejercito #1234, Urbanización Vila Real, Cayma, Arequipa', '2002-04-02', '958765432', 'pmartinez@hotmail.com'),
-(65412789666, 'Boehringer Ingelheim', 'Calle Lima #567, Urbanización San Lazaro, Arequipa', '1996-08-28', '948765212', 'jgonzalez@gmail.com'),
-(43219876777, 'Roche Holding AG', 'Avenida Andres Avelino Caceres #890, Distrito De Hunter, Arequipa', '1998-02-14', '955678123', 'ndiaz@hotmail.com'),
-(56473829888, 'Eli Lilly and Company', 'Calle Avenida De La Cultura #456, Urbanización Las Vizcachas, Arequipa', '2001-05-30', '948635184', 'ahernandez@gmail.com'),
-(21897543999, 'Sanofi S.A.', 'Avenida La Marina #789, Distrito De Cerro Colorado, Arequipa', '1995-10-11', '955786123', 'kperez@hotmail.com'),
-(98765431101, 'Merck & Co., Inc.', 'Calle Juanita #234, Urbanización Los Pinos, Arequipa', '2003-07-07', '998734123', 'mreyes@gmail.com');
+INSERT INTO cliente (ruc, nombresorazon, direccion, telefono, email) VALUES
+(90453612111, 'Pfizer Inc.', 'Calle Los Pinos #123, Urbanización Las Casuarinas, Arequipa', '998765432', 'srodriguez@gmail.com'),
+(23657849222, 'Novartis AG.', 'Avenida Dolores #456, Urbanización Los Cedros, Yanahuara, Arequipa', '995678521', 'ahernandez@hotmail.com'),
+(75891236333, 'Johnson & Johnson', 'Calle Francisco Bolognesi #678, Urbanización Las Condes, Sachaca, Arequipa', '954221345', 'vcastro@gmail.com'),
+(12345678444, 'Umbrella Corporation', 'Calle Mariscal Castilla #210, Distrito De Challapampa, Arequipa', '994536187', 'dgarcia@hotmail.com'),
+(89765432555, 'AstraZeneca plc.', 'Avenida Ejercito #1234, Urbanización Vila Real, Cayma, Arequipa', '958765432', 'pmartinez@hotmail.com'),
+(65412789666, 'Boehringer Ingelheim', 'Calle Lima #567, Urbanización San Lazaro, Arequipa', '948765212', 'jgonzalez@gmail.com'),
+(43219876777, 'Roche Holding AG', 'Avenida Andres Avelino Caceres #890, Distrito De Hunter, Arequipa', '955678123', 'ndiaz@hotmail.com'),
+(56473829888, 'Eli Lilly and Company', 'Calle Avenida De La Cultura #456, Urbanización Las Vizcachas, Arequipa', '948635184', 'ahernandez@gmail.com'),
+(21897543999, 'Sanofi S.A.', 'Avenida La Marina #789, Distrito De Cerro Colorado, Arequipa', '955786123', 'kperez@hotmail.com'),
+(98765431101, 'Merck & Co., Inc.', 'Calle Juanita #234, Urbanización Los Pinos, Arequipa', '998734123', 'mreyes@gmail.com');
 
 INSERT INTO categoria (id_categoria, nombre, descripcion) VALUES
 ('001', 'Medicamentos', 'Productos para el tratamiento de enfermedades'),
@@ -181,7 +180,7 @@ DELETE FROM producto
 WHERE id_producto = in_id_producto;
 
 create procedure `sp_eliminar_factura`(IN in_id_factura SMALLINT)
-delete from bd_farmacia.factura where factura.num_factura=in_id_factura;
+delete from factura where factura.num_factura=in_id_factura;
 
 CREATE PROCEDURE `sp_eliminar_cliente`(IN in_ruc_cliente CHAR(11))
 DELETE FROM cliente
