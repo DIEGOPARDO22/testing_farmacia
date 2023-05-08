@@ -138,11 +138,24 @@ def ver_factura(req, id):
     cursor.execute("call sp_ver_factura(%s)", (id,))
     data = cursor.fetchall()
     print("esta es la data:", data)
-    total_venta = float(data[0][6]) * int(data[0][5])
-    descuento = total_venta * 0.01
-    total_igv = total_venta * 0.18
-    importe_total = total_venta + total_igv -descuento
-    return render(req, 'facturas/preliminar.html', {'data': data, 'total_igv': total_igv, 'importe_total': importe_total, 'descuento': descuento})
+    nuevos_datos = []
+    suma_importe_total = 0
+    suma_total_venta = 0
+    suma_total_igv = 0
+    suma_total_descuento = 0# initialize the variable outside the for loop
+    for d in data:
+        total_venta = float(d[6]) * int(d[5])
+        descuento = total_venta * 0.01
+        total_igv = total_venta * 0.18
+        importe_total = total_venta + total_igv - descuento
+        suma_importe_total += importe_total  # add the value to the variable
+        suma_total_venta += total_venta
+        suma_total_igv += total_igv # add the value to the variable
+        suma_total_descuento += descuento # add the value to the variable
+        nuevos_datos.append((d[0], d[1], d[2], d[3], d[4], d[5], d[6], importe_total))
+    print(nuevos_datos)
+    return render(req, 'facturas/preliminar.html', {'data': data, 'suma_total_igv': suma_total_igv, 'suma_importe_total': suma_importe_total, 'suma_total_descuento': suma_total_descuento, 'suma_total_venta': suma_total_venta, 'nuevos_datos': nuevos_datos})
+
 
 
 def print_fact(req):

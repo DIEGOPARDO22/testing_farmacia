@@ -50,26 +50,26 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for row in data %}
+                    {% for row in nuevos_datos %}
                     <tr class="">
                         <td scope="row">{{ row.4 }}</td>
                         <td>{{ row.5 }}</td>
                         <td>{{ row.6 }}</td>
-                        <td>{{importe_total}}</td>
+                        <td>{{row.7}}</td>
                     </tr>
                     {% endfor %}
                 </tbody>
             </table>
         </div>
         <br>
-        <div class="d-flex mb-3">
+        <div class="d-flex mb-3 align-self-end">
             <div class="flex-fill "></div>
             <div class=" flex-fill "></div>
             <div class=" flex-fill">
-                <p><b>Total valor venta </b> S/ {{data.0.6}}</p>
-                <p><b>Descuento </b> S/ {{descuento}}</p>
-                <p><b>Total IGV (18%) </b> S/ {{total_igv}}</p>
-                <p><b>Importe total </b> S/ {{importe_total}}</p>
+                <p><b>Total valor venta </b> S/ {{suma_total_venta}}</p>
+                <p><b>Descuento </b> S/ {{suma_total_descuento}}</p>
+                <p><b>Total IGV (18%) </b> S/ {{suma_total_igv}}</p>
+                <p><b>Importe total </b> S/ {{suma_importe_total}}</p>
             </div>
         </div>
         <br>
