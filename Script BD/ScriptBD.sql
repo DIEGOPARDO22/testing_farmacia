@@ -30,9 +30,9 @@ CREATE TABLE IF NOT EXISTS factura(
     ruc CHAR(11),
     fecha DATE,
     PRIMARY KEY (num_factura),
-    FOREIGN KEY (ruc) REFERENCES cliente (ruc) ON UPDATE CASCADE
+    FOREIGN KEY (ruc) REFERENCES cliente (ruc) ON UPDATE CASCADE ON DELETE SET NULL
 ) ENGINE=InnoDB;
-ALTER TABLE factura AUTO_INCREMENT=3000;
+ALTER TABLE factura AUTO_INCREMENT=30000;
 
 /*CREACION DE TABLA PRODUCTO*/
 CREATE TABLE IF NOT EXISTS producto(
@@ -197,8 +197,25 @@ SELECT producto.id_producto, producto.nombre, producto.precio, producto.stock, p
 FROM producto INNER JOIN categoria WHERE id_producto=in_id_producto AND producto.id_categoria=categoria.id_categoria;
 
 CREATE PROCEDURE `sp_buscar_cliente_por_id`(IN in_ruc_cliente CHAR(11))
-SELECT * FROM cliente WHERE in_ruc_cliente = cliente.ruc
+SELECT * FROM cliente WHERE in_ruc_cliente = cliente.ruc;
 
+CREATE PROCEDURE `sp_buscar_factura_por_id`(IN in_id_factura SMALLINT)
+SELECT factura.num_factura, factura.ruc, factura.fecha, detalle.id_producto, detalle.cantidad
+FROM factura INNER JOIN detalle
+WHERE factura.num_factura = detalle. id_factura AND factura.num_factura=in_id_factura;
+
+call sp_buscar_factura_por_id(00001);
+/* =============================================================================================
+											MOSTRAR
+============================================================================================= */
+
+create procedure `sp_ver_factura`(IN num_fac smallint)
+SELECT factura.num_factura, factura.fecha, cliente.nombresorazon, cliente.ruc, producto.nombre, detalle.cantidad, producto.precio, cliente.direccion
+FROM detalle
+INNER JOIN factura ON factura.num_factura = detalle.id_factura
+INNER JOIN cliente ON cliente.ruc = factura.ruc
+INNER JOIN producto ON producto.id_producto = detalle.id_producto where
+factura.num_factura=num_fac;
 /* =============================================================================================
 											ULTIMA FACTURA
 ============================================================================================= */
