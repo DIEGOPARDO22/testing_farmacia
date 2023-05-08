@@ -184,7 +184,7 @@ def ver_factura(req, id):
 def print_fact(req):
     try:
         pyautogui.hotkey('ctrl', 'p')
-        time.sleep(5)
+        time.sleep(300)
         return render(req, 'inicio.html')
     except Exception as e:
         print(f"Error: {e}")
