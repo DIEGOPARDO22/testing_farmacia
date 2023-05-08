@@ -14,74 +14,42 @@
             {% csrf_token %}
             {% if data %}
             <div class="mb-3">
-                <label for="" class="form-label">RUC</label>
-                <input type="text"
-                  class="form-control" name="cliente_ruc" id="numero_identificacion" aria-describedby="helpId" maxlength="11" pattern="[0-9]{11}" placeholder="Ejemplo: 12345678910" value="{{data.0.0}}" readonly>
-                  <script>
-                    const inputNumeroIdentificacion11 = document.getElementById('numero_identificacion');
-
-                    inputNumeroIdentificacion11.addEventListener('input', function() {
-                    this.value = this.value.replace(/[^0-9]/g, ''); // Remover caracteres no numéricos
-                    });
-                  </script>
-                  
+              <label for="" class="form-label">RUC</label>
+              <input type="text" class="form-control" name="cliente_ruc" id="numero_identificacion" aria-describedby="helpId" maxlength="11" pattern="[0-9]{11}" placeholder="Ejemplo: 12345678910" value="{{data.0.0}}" readonly>
+              <small id="helpId" class="form-text text-muted">(!) Solo se permiten números</small>
             </div>
+            
 
             <div class="mb-3">
-                <label for="" class="form-label">Razón</label>
-                <input type="text"
-                  class="form-control" name="cliente_razon" id="caracteres" aria-describedby="helpId" placeholder="Ejemplo: Umbrella S.A." pattern='[a-zA-Z0-9\s\.\,\"]+' maxlength="100" value="{{data.0.1}}" required>
-                <script>
-                    const input22 = document.getElementById('caracteres');
-                    input22.addEventListener('input', function() {
-                    this.value = this.value.replace(/[^\w\s\.\,\&\"]/gi, ''); // Remover caracteres no permitidos
-                    });
-                </script>
-                <small id="helpId" class="form-text text-muted" style="display: block;">(!) No usar caracteres especiales</small>
-                <small id="helpId" class="form-text text-muted" style="display: block;">(!) Únicos caracteres permitidos: (") (,) (.)</small>
+              <label for="" class="form-label">Razón</label>
+              <input type="text" class="form-control" name="cliente_razon" id="caracteres" aria-describedby="helpId" placeholder="Ejemplo: Umbrella S.A." pattern='[a-zA-Z0-9\s\.\,\"]+' maxlength="100" value="{{data.0.1}}" required>
+              <small id="helpId" class="form-text text-muted" style="display: block;">(!) No usar caracteres especiales</small>
+              <small id="helpId" class="form-text text-muted" style="display: block;">(!) Únicos caracteres permitidos: (") (,) (.)</small>
             </div>
+            
 
             <div class="mb-3">
-                <label for="" class="form-label">Dirección</label>
-                <input type="text"
-                  class="form-control" name="cliente_direccion" id="caracteres1" aria-describedby="helpId" placeholder="Ejemplo: Los Girasoles A-22 Mariano Melgar" maxlength="150" value="{{data.0.2}}" required>
-                    <script>
-                        const input33 = document.getElementById('caracteres1');
-                        input33.addEventListener('input', function() {
-                        this.value = this.value.replace(/[^\w\s\.\,\-\"]/gi, ''); // Remover caracteres no permitidos
-                        });
-                    </script>
-                  <small id="helpId" class="form-text text-muted" style="display: block;">(!) No usar caracteres especiales</small>
-                  <small id="helpId" class="form-text text-muted" style="display: block;">(!) Únicos caracteres permitidos: (") (,) (.) (-)</small>
+              <label for="" class="form-label">Dirección</label>
+              <input type="text" class="form-control" name="cliente_direccion" id="caracteres1" aria-describedby="helpId" placeholder="Ejemplo: Los Girasoles A-22 Mariano Melgar" pattern="[a-zA-Z0-9\s\.\,\-\"]+" maxlength="150" value="{{data.0.2}}" required>
+              <small id="helpId" class="form-text text-muted" style="display: block;">(!) No usar caracteres especiales</small>
+              <small id="helpId" class="form-text text-muted" style="display: block;">(!) Únicos caracteres permitidos: (") (,) (.) (-)</small>
             </div>
+            
 
             <div class="mb-3">
-                <label for="" class="form-label">Celular</label>
-                <input type="text"
-                  class="form-control" name="cliente_telefono" id="celular" aria-describedby="helpId" placeholder="Ejemplo: 999888777" pattern="[0-9]{9}" maxlength="9" value="{{data.0.3}}" required>
-                  <script>
-                    const inputNumeroIdentificacion22 = document.getElementById('celular');
-
-                    inputNumeroIdentificacion22.addEventListener('input', function() {
-                    this.value = this.value.replace(/[^0-9]/g, ''); // Remover caracteres no numéricos
-                    });
-                  </script>
-                <small id="helpId" class="form-text text-muted" style="display: block;">(!) Únicamente valores numéricos</small>
-                <small id="helpId" class="form-text text-muted" style="display: block;">(!) Inserte valores de 9 digitos</small>
+              <label for="" class="form-label">Celular</label>
+              <input type="text" class="form-control" name="cliente_telefono" id="celular" aria-describedby="helpId" placeholder="Ejemplo: 999888777" pattern="[0-9]{9}" maxlength="9" value="{{data.0.3}}" required>
+              <small id="helpId" class="form-text text-muted" style="display: block;">(!) Únicamente valores numéricos</small>
+              <small id="helpId" class="form-text text-muted" style="display: block;">(!) Inserte valores de 9 dígitos</small>
             </div>
+            
 
             <div class="mb-3">
-                <label for="" class="form-label">Email</label>
-                <input type="email"
-                  class="form-control" name="cliente_email" id="correo" aria-describedby="helpId" placeholder="Ejemplo: correo.electronico@hotmail.com" maxlength="50" value="{{data.0.4}}" required>
-                <script>
-                    const input5 = document.getElementById('correo');
-                    input5.addEventListener('input', function() {
-                    this.value = this.value.replace(/[^\w\s\.\,\-\@]/gi, ''); // Remover caracteres no permitidos
-                    });
-                </script>
-                <small id="helpId" class="form-text text-muted" style="display: block;">(!) Únicamente correos electrónicos</small>
+              <label for="" class="form-label">Email</label>
+              <input type="email" class="form-control" name="cliente_email" id="correo" aria-describedby="helpId" placeholder="Ejemplo: correo.electronico@hotmail.com" maxlength="50" pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}" value="{{data.0.4}}" required>
+              <small id="helpId" class="form-text text-muted" style="display: block;">(!) Únicamente correos electrónicos</small>
             </div>
+            
             
             <div class="justify-content-center">
                 <button type="submit" class="btn btn-primary">Ingresar</button>
@@ -90,75 +58,42 @@
 
             {% else %}
             <div class="mb-3">
-                <label for="" class="form-label">RUC</label>
-                <input type="text"
-                  class="form-control" name="cliente_ruc" id="numero_identificacion" aria-describedby="helpId" maxlength="11" pattern="[0-9]{11}" placeholder="Ejemplo: 12345678910" required>
-                  <script>
-                    const inputNumeroIdentificacion = document.getElementById('numero_identificacion');
-
-                    inputNumeroIdentificacion.addEventListener('input', function() {
-                    this.value = this.value.replace(/[^0-9]/g, ''); // Remover caracteres no numéricos
-                    });
-                  </script>
-                  <small id="helpId" class="form-text text-muted" style="display: block;">(!) Únicamente valores numéricos</small>
-                  <small id="helpId" class="form-text text-muted" style="display: block;">(!) Inserte valores de 11 dígitos</small>
+              <label for="" class="form-label">RUC</label>
+              <input type="text" class="form-control" name="cliente_ruc" id="numero_identificacion" aria-describedby="helpId" maxlength="11" pattern="\d{11}" placeholder="Ejemplo: 12345678910" required>
+              <small id="helpId" class="form-text text-muted" style="display: block;">(!) Únicamente valores numéricos</small>
+              <small id="helpId" class="form-text text-muted" style="display: block;">(!) Inserte valores de 11 dígitos</small>
             </div>
+            
 
             <div class="mb-3">
-                <label for="" class="form-label">Razón</label>
-                <input type="text"
-                  class="form-control" name="cliente_razon" id="caracteres" aria-describedby="helpId" placeholder="Ejemplo: Umbrella S.A." pattern='[a-zA-Z0-9\s\.\,\"]+' maxlength="100" required>
-                <script>
-                    const input = document.getElementById('caracteres');
-                    input.addEventListener('input', function() {
-                    this.value = this.value.replace(/[^\w\s\.\,\"]/gi, ''); // Remover caracteres no permitidos
-                    });
-                </script>
-                <small id="helpId" class="form-text text-muted" style="display: block;">(!) No usar caracteres especiales</small>
-                <small id="helpId" class="form-text text-muted" style="display: block;">(!) Únicos caracteres permitidos: (") (,) (.)</small>
+              <label for="" class="form-label">Razón</label>
+              <input type="text" class="form-control" name="cliente_razon" id="caracteres" aria-describedby="helpId" placeholder="Ejemplo: Umbrella S.A." pattern="[a-zA-Z0-9\s.,:\;&quot;-]+" maxlength="100" required>
+              <small id="helpId" class="form-text text-muted" style="display: block;">(!) No usar caracteres especiales</small>
+              <small id="helpId" class="form-text text-muted" style="display: block;">(!) Únicos caracteres permitidos: (") (,) (.)</small>
             </div>
+            
+            <div class="mb-3">
+              <label for="" class="form-label">Dirección</label>
+              <input type="text" class="form-control" name="cliente_direccion" id="caracteres1" aria-describedby="helpId" placeholder="Ejemplo: Los Girasoles A-22 Mariano Melgar" maxlength="150" pattern="[a-zA-Z0-9\s.,:\;&quot;-]+" required>
+              <small id="helpId" class="form-text text-muted" style="display: block;">(!) No usar caracteres especiales</small>
+              <small id="helpId" class="form-text text-muted" style="display: block;">(!) Únicos caracteres permitidos: (") (,) (.) (-)</small>
+            </div>
+            
 
             <div class="mb-3">
-                <label for="" class="form-label">Dirección</label>
-                <input type="text"
-                  class="form-control" name="cliente_direccion" id="caracteres1" aria-describedby="helpId" placeholder="Ejemplo: Los Girasoles A-22 Mariano Melgar" maxlength="150" required>
-                    <script>
-                        const input1 = document.getElementById('caracteres1');
-                        input1.addEventListener('input', function() {
-                        this.value = this.value.replace(/[^\w\s\.\,\-\"]/gi, ''); // Remover caracteres no permitidos
-                        });
-                    </script>
-                  <small id="helpId" class="form-text text-muted" style="display: block;">(!) No usar caracteres especiales</small>
-                  <small id="helpId" class="form-text text-muted" style="display: block;">(!) Únicos caracteres permitidos: (") (,) (.) (-)</small>
+              <label for="" class="form-label">Celular</label>
+              <input type="text" class="form-control" name="cliente_telefono" id="celular" aria-describedby="helpId" placeholder="Ejemplo: 999888777" pattern="\d{9}" maxlength="9" required>
+              <small id="helpId" class="form-text text-muted" style="display: block;">(!) Únicamente valores numéricos</small>
+              <small id="helpId" class="form-text text-muted" style="display: block;">(!) Inserte valores de 9 dígitos</small>
             </div>
+            
 
             <div class="mb-3">
-                <label for="" class="form-label">Celular</label>
-                <input type="text"
-                  class="form-control" name="cliente_telefono" id="celular" aria-describedby="helpId" placeholder="Ejemplo: 999888777" pattern="[0-9]{9}" maxlength="9" required>
-                  <script>
-                    const inputNumeroIdentificacion1 = document.getElementById('celular');
-
-                    inputNumeroIdentificacion1.addEventListener('input', function() {
-                    this.value = this.value.replace(/[^0-9]/g, ''); // Remover caracteres no numéricos
-                    });
-                  </script>
-                <small id="helpId" class="form-text text-muted" style="display: block;">(!) Únicamente valores numéricos</small>
-                <small id="helpId" class="form-text text-muted" style="display: block;">(!) Inserte valores de 9 digitos</small>
+              <label for="" class="form-label">Email</label>
+              <input type="email" class="form-control" name="cliente_email" id="correo" aria-describedby="helpId" placeholder="Ejemplo: correo.electronico@hotmail.com" maxlength="50" pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}" required>
+              <small id="helpId" class="form-text text-muted" style="display: block;">(!) Únicamente correos electrónicos</small>
             </div>
-
-            <div class="mb-3">
-                <label for="" class="form-label">Email</label>
-                <input type="email"
-                  class="form-control" name="cliente_email" id="correo" aria-describedby="helpId" placeholder="Ejemplo: correo.electronico@hotmail.com" maxlength="50" required>
-                <script>
-                    const input2 = document.getElementById('correo');
-                    input2.addEventListener('input', function() {
-                    this.value = this.value.replace(/[^\w\s\.\,\-\@]/gi, ''); // Remover caracteres no permitidos
-                    });
-                </script>
-                <small id="helpId" class="form-text text-muted" style="display: block;">(!) Únicamente correos electrónicos</small>
-            </div>
+            
             
             <div class="justify-content-center">
                 <button type="submit" class="btn btn-primary">Ingresar</button>
