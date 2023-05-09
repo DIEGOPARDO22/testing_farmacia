@@ -111,7 +111,7 @@
                 <script>
                     const input = document.getElementById('caracteres');
                     input.addEventListener('input', function() {
-                    this.value = this.value.replace(/[^\w\s\.\,\"]/gi, ''); // Remover caracteres no permitidos
+                    this.value = this.value.replace(/[^\w\s\.\,\&\"]/gi, ''); // Remover caracteres no permitidos
                     });
                 </script>
                 <small id="helpId" class="form-text text-muted" style="display: block;">(!) No usar caracteres especiales</small>

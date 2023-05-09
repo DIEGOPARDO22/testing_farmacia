@@ -34,11 +34,11 @@
                             <td>{{ row.2 }}</td>
                             <td>    <!--botones de editado y borrado-->
                                 <a name="" id="" class="btn btn-primary" href="{%url 'ver_factura' row.0%}" role="button">Ver</a>
-                                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal{{ row.0 }}">
                                     Borrar
                                 </button>
                                 
-                                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal fade" id="exampleModal{{ row.0 }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                     <div class="modal-dialog modal-dialog-centered">
                                     <div class="modal-content">
                                         <div class="modal-header">

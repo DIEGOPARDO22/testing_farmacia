@@ -106,7 +106,8 @@
                   // Agregar las celdas de cantidad y producto
                   nuevaFila.innerHTML = `
                     <td>
-                      <input type="text" class="form-control" name="cantidad[]" maxlength="3" required>
+                      <input type="text" id="cantidad" class="form-control" name="cantidad[]" maxlength="3" pattern="[0-9]+" required>
+                      <small id="helpId" class="form-text text-muted">(!) Sólo valores numéricos</small>
                     </td>
                     <td>
                       <select class="form-select text-muted" name="id_producto[]">
@@ -114,11 +115,12 @@
                         <option value="{{ r.0 }}">{{ r.1 }} | Precio Unitario: {{r.2}}</option>
                         {% endfor %}
                       </select>
+                      <small id="helpId" class="form-text text-muted">(!) Lista de opciones</small>
                     </td>
                     <td>
                       <button class="btn btn-succes" type="button">Eliminar</button>
                     </td>
-                    <script></<script>
+                    
                   `;
 
                   // Agregar la nueva fila a la tabla

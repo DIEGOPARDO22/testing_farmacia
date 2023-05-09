@@ -82,13 +82,10 @@ INSERT INTO factura (ruc, fecha) VALUES
 (90453612111, '2022-01-15'),
 (23657849222, '2022-01-15'),
 (75891236333, '2022-01-16'),
-(12345678444, '2022-01-17'),
 (89765432555, '2022-01-17'),
-(65412789666, '2022-01-18'),
 (43219876777, '2022-01-19'),
 (56473829888, '2022-01-20'),
-(21897543999, '2022-01-20'),
-(98765431101, '2022-01-21');
+(21897543999, '2022-01-20');
 
 INSERT INTO producto (nombre, precio, stock, id_categoria) VALUES
 ('Paracetamol', 3.50, 500, '001'),
@@ -104,15 +101,17 @@ INSERT INTO producto (nombre, precio, stock, id_categoria) VALUES
 
 INSERT INTO detalle (id_factura, id_producto, cantidad) VALUES
 ('30001', '1001', 2),
-('30002', '1003', 1),
-('30003', '1002', 3),
-('30001', '1005', 2),
-('30005', '1006', 1),
-('30001', '1007', 1),
+('30001', '1003', 1),
+('30002', '1002', 3),
+('30002', '1005', 2),
+('30003', '1006', 1),
+('30003', '1007', 1),
+('30004', '1002', 1),
+('30005', '1004', 1),
+('30005', '1001', 1),
+('30006', '1003', 2),
 ('30007', '1002', 1),
-('30008', '1004', 1),
-('30009', '1001', 1),
-('30008', '1003', 2);
+('30007', '1005', 1);
 
 /* =============================================================================================
 											LISTAR
@@ -120,19 +119,22 @@ INSERT INTO detalle (id_factura, id_producto, cantidad) VALUES
 CREATE PROCEDURE `sp_listar_producto`()
 SELECT producto.id_producto, producto.nombre, producto.precio, producto.stock, categoria.nombre
 FROM producto INNER JOIN categoria 
-WHERE producto.id_categoria = categoria.id_categoria;
+WHERE producto.id_categoria = categoria.id_categoria
+ORDER BY producto.nombre;
 
 CREATE PROCEDURE `sp_listar_clientes`()
-SELECT * FROM cliente;
+SELECT * FROM cliente ORDER BY nombresorazon;
 
 CREATE PROCEDURE `sp_listar_facturas`()
 SELECT factura.num_factura, cliente.nombresorazon, factura.fecha
 FROM factura INNER JOIN cliente
-WHERE factura.ruc = cliente.ruc;
+WHERE factura.ruc = cliente.ruc
+ORDER BY factura.fecha DESC;
 
 CREATE PROCEDURE `sp_listar_categorias`()
 SELECT id_categoria, nombre
-FROM categoria;
+FROM categoria
+ORDER BY nombre;
 
 /* =============================================================================================
 											CREAR
@@ -171,10 +173,9 @@ WHERE id_producto = in_id_producto;
 
 create procedure `sp_eliminar_factura`(IN in_id_factura SMALLINT)
 delete from factura where factura.num_factura=in_id_factura;
-call sp_eliminar_factura(30010);
+
 CREATE PROCEDURE `sp_eliminar_cliente`(IN in_ruc_cliente CHAR(11))
-DELETE FROM cliente
-WHERE ruc = in_ruc_cliente;
+DELETE FROM cliente WHERE ruc = in_ruc_cliente;
 
 /* =============================================================================================
 											BUSCAR

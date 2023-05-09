@@ -96,14 +96,26 @@
             <div class="mb-3">
                 <label for="" class="form-label">Nombre</label>
                 <input type="text"
-                  class="form-control" name="producto_nombre" id="sin-caracteres-especiales" pattern="[A-Za-z0-9\s]+" aria-describedby="helpId" maxlength="25" placeholder="Ejemplo: Shampoo" required>                  
-                <small id="helpId" class="form-text text-muted">(!) No usar caracteres especiales</small>
+                  class="form-control" name="producto_nombre" id="nombre" pattern="[A-Za-z0-9\s]+" aria-describedby="helpId" maxlength="25" placeholder="Ejemplo: Shampoo" required>                  
+                  <script>
+                    const input2= document.getElementById('nombre');
+                    input2.addEventListener('input', function() {
+                    this.value = this.value.replace(/[^\w\s\.\,\&\"]/gi, ''); // Remover caracteres no permitidos
+                    });
+                  </script>
+                  <small id="helpId" class="form-text text-muted">(!) No usar caracteres especiales</small>
             </div>
 
             <div class="mb-3">
                 <label for="" class="form-label">Precio</label>
                 <input type="text"
-                  class="form-control" name="producto_precio" id="" aria-describedby="helpId" placeholder="Ejemplo: 25.50" step="0.01" min="0" pattern="[0-9]+([.][0-9]{0,2})?" maxlength="5" required>
+                  class="form-control" name="producto_precio" id="precio" aria-describedby="helpId" placeholder="Ejemplo: 25.50" step="0.01" min="0" pattern="[0-9]+([.][0-9]{0,2})?" maxlength="5" required>
+                  <script>
+                    const input1= document.getElementById('precio');
+                    input1.addEventListener('input', function() {
+                    this.value = this.value.replace(/[^\w\s\.\,\&\"]/gi, ''); // Remover caracteres no permitidos
+                    });
+                  </script>
                 <small id="helpId" class="form-text text-muted" style="display: block;">(!) Insertar valores de coma flotante</small>
                 <small id="helpId" class="form-text text-muted" style="display: block;">(!) Máximo 2 decimales</small>
             </div>
