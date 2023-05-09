@@ -3,7 +3,7 @@
 {% block contenido %}
 <br/><br/>
 
-<div class="card">
+<div class="card" style= "margin-top: 30px;">
     <div class="card-header">
         Insertar Factura
     </div>
@@ -12,9 +12,6 @@
 
         <form method="POST">
             {% csrf_token %}
-            {% if data %}
-            
-            {% else %}
             <div class="mb-3">
               <label for="cliente" class="form-label">Cliente</label>
               <input type="text" class="form-control" name="cliente" id="cliente" pattern="[A-Za-zÀ-ÿ0-9\s.,:;-]+" aria-describedby="helpId" maxlength="25" placeholder="Búsqueda de Cliente" required>
@@ -70,14 +67,23 @@
             
             <div class="mb-3">
               <label for="" class="form-label">Fecha</label>
-              <input type="date" class="form-control" id="" name="fecha" date-format="yyyy-mm-dd" max="9999-12-29" value="2023-05-07">
+              <input type="date" class="form-control" id="" name="fecha" date-format="yyyy-mm-dd" max="9999-12-29" value="{{fecha_actual}}">
+              <script>
+                var fecha_actual = new Date().toISOString().substr(0, 10);
+                document.getElementsByName("fecha")[0].setAttribute("value", fecha_actual);
+              </script>
               <small id="helpId" class="form-text text-muted" style="display: block;">(!) Formato MM-DD-AAAA</small>
             </div>
             
             <div class="card-body">
               <div class="d-flex align-items-center justify-content-between">
                   <h4 class=" title-detalle">Detalle de Factura</h4>
-                  <button class="btn btn-success align-self-end" id="btn-add-row">Añadir Producto</button>
+                  <button class="btn btn-success align-self-end" id="btn-add-row">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-square-fill" viewBox="0 0 16 16">
+                      <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm6.5 4.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3a.5.5 0 0 1 1 0z"/>
+                    </svg><br>
+                    Añadir Producto
+                  </button>
               </div>
               <table class="table" id="table-detalle">
                   <thead>
@@ -105,7 +111,8 @@
                   // Agregar las celdas de cantidad y producto
                   nuevaFila.innerHTML = `
                     <td>
-                      <input type="text" class="form-control" name="cantidad[]" maxlength="3" required>
+                      <input type="text" id="cantidad" class="form-control" name="cantidad[]" maxlength="3" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0,3);" required>
+                      <small id="helpId" class="form-text text-muted">(!) Sólo valores numéricos</small>
                     </td>
                     <td>
                       <select class="form-select text-muted" name="id_producto[]">
@@ -113,11 +120,18 @@
                         <option value="{{ r.0 }}">{{ r.1 }} | Precio Unitario: {{r.2}}</option>
                         {% endfor %}
                       </select>
+                      <small id="helpId" class="form-text text-muted">(!) Lista de opciones</small>
                     </td>
                     <td>
-                      <button class="btn btn-succes" type="button">Eliminar</button>
+                      <button class="btn btn-succes" type="button">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-backspace" viewBox="0 0 16 16">
+                          <path d="M5.83 5.146a.5.5 0 0 0 0 .708L7.975 8l-2.147 2.146a.5.5 0 0 0 .707.708l2.147-2.147 2.146 2.147a.5.5 0 0 0 .707-.708L9.39 8l2.146-2.146a.5.5 0 0 0-.707-.708L8.683 7.293 6.536 5.146a.5.5 0 0 0-.707 0z"/>
+                          <path d="M13.683 1a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-7.08a2 2 0 0 1-1.519-.698L.241 8.65a1 1 0 0 1 0-1.302L5.084 1.7A2 2 0 0 1 6.603 1h7.08zm-7.08 1a1 1 0 0 0-.76.35L1 8l4.844 5.65a1 1 0 0 0 .759.35h7.08a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1h-7.08z"/>
+                        </svg>
+                        Eliminar
+                      </button>
                     </td>
-                    <script></<script>
+                    
                   `;
 
                   // Agregar la nueva fila a la tabla
@@ -135,10 +149,19 @@
               </script>
             </div>
             <div class="justify-content-center">
-                <button type="submit" class="btn btn-primary">Ingresar</button>
-                <a name="" id="" class="btn btn-danger" href="{% url 'facturas' %}" role="button">Cancelar</a>
+                <button type="submit" class="btn btn-primary">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-square-fill" viewBox="0 0 16 16">
+                    <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm10.03 4.97a.75.75 0 0 1 .011 1.05l-3.992 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.75.75 0 0 1 1.08-.022z"/>
+                  </svg><br>
+                  Ingresar
+                </button>
+                <a name="" id="" class="btn btn-danger" href="{% url 'facturas' %}" role="button">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle-fill" viewBox="0 0 16 16">
+                    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"/>
+                  </svg><br>
+                  Cancelar
+                </a>
             </div>
-            {% endif %}
         </form>
 
     </div>

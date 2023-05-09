@@ -5,74 +5,73 @@
 <br/>
 <br/>
 
-<div class="container">
-        <h1>Simulación de Factura</h1>
-        {% for row in data %} <!--VISUALIZACION DE REGISTROS-->
+<div style= "margin-top: 30px;" class="container">
+        
         <div class="d-flex mb-3">
-            <div class="flex-fill "></div>
-            <div class=" flex-fill "></div>
-            <div class=" flex-fill">
-                <form>
-                    <div class="form-group">
-                        <label class="h3" for="nombre">FACTURA ELECTRONICA</label>
-                        <p>RUC: {{row.0}}</p>
-                    </div>
-                    <br>
-                    
-                </form>
-
-            
+            <div class="flex-fill" style="border: 1px solid black; border-radius: 10px; padding: 10px;">
+                <p class="h2"> FARMACIA LAS ANTENAS</p>
+                <p class="h5"> Calle San Juan 456 - Arequipa</p>
+                <p class="h6"> RUC: 20123456789</p>
             </div>
+            <div class="flex-fill" style="border: 1px solid black; border-radius: 10px; padding: 10px">
+                <label class="h2" for="nombre"><h4>FACTURA ELECTRONICA</h3></label>
+                <p>Nro: {{data.0.0}}</p>
+            </div>   
+            <hr>
         </div>
-        <div class="d-flex mb-3">
+        <div class="d-flex mb-3" style="display: flex;">
             <div class="flex-fill ">
-                <p class="h5"> FARMACIA LAS ANTENAS</p>
-                <p class="h8"> {{direccion}}</p>
-                <hr>
                 <p class="h6"><br> <b>FECHA DE EMISION:</b><br></p>
-                <p>{{row.1}}</p>
+                <p>{{data.0.1}}</p>                
+            </div>
+            <div class=" flex-fill ">
                 <p><br><b>RAZON SOCIAL:</b><br></p>
-                <p>{{row.2}}</p>
+                <p>{{data.0.2}}</p>
+            </div>
+            <div class=" flex-fill">
                 <p class="h6"><br><b>RUC </b><br></p>
-                <p>{{row.3}}</p>
+                <p>{{data.0.3}}</p>
+            </div>
+            <div class=" flex-fill">
                 <p class="h6"><br><b>Tipo de Moneda</b> <br></p>
                 <p>SOLES</p>
-                <p class="h6"><br><b>DIRECCION</b> <br></p>
-                <p>{{row.7}}</p>
-            
             </div>
-            <div class=" flex-fill "></div>
-            <div class=" flex-fill"></div>
+        </div>
+        <div>
+            <p class="h6"><br><b>DIRECCION</b> <br></p>
+                <p>{{data.0.7}}</p>
         </div>
         <div>
             <table class="table mt-4">
-            <thead>
-                <tr>
-                    <th>Producto</th>
-                    <th>Cantidad</th>
-                    <th>Precio Unitario</th>
-                    <th>Total</th>
-                </tr>
-            </thead>
-            <tbody >
-                <tr class="">
-                    <td scope="row">{{ row.4 }}</td>
-                    <td>{{ row.5 }}</td>
-                    <td>{{ row.6 }}</td>
-                    <td>{{importe_total}}</td>
-                </tr>
-            </tbody>
+                <thead>
+                    <tr>
+                        <th>Producto</th>
+                        <th>Cantidad</th>
+                        <th>Precio Unitario</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in nuevos_datos %}
+                    <tr class="">
+                        <td scope="row">{{ row.4 }}</td>
+                        <td>{{ row.5 }}</td>
+                        <td>{{ row.6 }}</td>
+                        <td>{{row.7}}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
             </table>
         </div>
         <br>
-        <div class="d-flex mb-3">
+        <div class="d-flex mb-3 align-self-end">
             <div class="flex-fill "></div>
             <div class=" flex-fill "></div>
             <div class=" flex-fill">
-                <p><b>Total valor venta </b> S/ {{row.6}}</p>
-                <p><b>Descuento </b> S/ {{descuento}}</p>
-                <p><b>Total IGV (18%) </b> S/ {{total_igv}}</p>
-                <p><b>Importe total </b> S/ {{importe_total}}</p>
+                <p><b>Total valor venta </b> S/ {{suma_total_venta}}</p>
+                <p><b>Descuento </b> S/ {{suma_total_descuento}}</p>
+                <p><b>Total IGV (18%) </b> S/ {{suma_total_igv}}</p>
+                <p><b>Importe total </b> S/ {{suma_importe_total}}</p>
             </div>
         </div>
         <br>
@@ -82,16 +81,24 @@
 
                 <form method="POST" action="{% url 'print_fact' %}">
                 {% csrf_token %}
-                    <button type="submit" class="btn btn-success">Emitir factura</button>
-                    <a name="" id="" class="btn btn-danger" href="{%url 'facturas'%}" role="button">Volver</a>
+                    <button type="submit" class="btn btn-info">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-download" viewBox="0 0 16 16">
+                            <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
+                            <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/>
+                        </svg><br>
+                        Emitir factura
+                    </button>
+                    <a name="" id="" class="btn btn-danger" href="{%url 'facturas'%}" role="button">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
+                        </svg><br>
+                        Volver
+                    </a>
                 </form>                
             </div>
             <div class=" flex-fill"></div>
         </div>
-        {% endfor %}
-
     </div>
     <br>
     <br>
-
 {% endblock %}

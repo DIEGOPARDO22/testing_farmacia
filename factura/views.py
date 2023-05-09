@@ -105,7 +105,12 @@ def crear_factura_y_detalle(req):
     clientes_lista = cursor.fetchall()
 
     cursor.execute('CALL sp_listar_producto')
-    productos_lista = cursor.fetchall()
+    productos_lista_inicial = cursor.fetchall()
+    productos_lista = []
+
+    for tupla in productos_lista_inicial:
+        if tupla[3] > 0:
+            productos_lista.append(tupla)
     
     if req.method == "POST":
         # Manejar la creación de la factura
@@ -125,9 +130,9 @@ def crear_factura_y_detalle(req):
                     cursor.execute("CALL sp_crear_detalle('" + str(num_factura) + "','" + str(id_producto[i]) + "','" + str(cantidad[i]) + "')")
                 return redirect('facturas')
             else:
-                return redirect('crear_factura_y_detalle')
+                return redirect('facturas')
         else:
-            return redirect('crear_factura_y_detalle')
+            return redirect('facturas')
     else:
         return render(req, 'facturas/form.html', {'ruc': clientes_lista, 'id_producto': productos_lista})
 
@@ -138,11 +143,25 @@ def ver_factura(req, id):
     cursor.execute("call sp_ver_factura(%s)", (id,))
     data = cursor.fetchall()
     print("esta es la data:", data)
-    total_venta = float(data[0][6])
-    descuento = total_venta * 0.01
-    total_igv = total_venta * 0.18
-    importe_total = total_venta + total_igv -descuento
-    return render(req, 'facturas/preliminar.html', {'data': data, 'total_igv': total_igv, 'importe_total': importe_total, 'descuento': descuento})
+    nuevos_datos = []
+    suma_importe_total = 0
+    suma_total_venta = 0
+    suma_total_igv = 0
+    suma_total_descuento = 0
+    for d in data:
+        total_venta = float(d[6]) * int(d[5])
+        descuento = total_venta * 0.01
+        total_igv = total_venta * 0.18
+        importe_total = total_venta + total_igv - descuento
+        
+        suma_importe_total += importe_total  
+        suma_total_venta += total_venta
+        suma_total_igv += total_igv 
+        suma_total_descuento += descuento 
+        nuevos_datos.append((d[0], d[1], d[2], d[3], d[4], d[5], d[6], "{:.2f}".format(importe_total) ))
+    print(nuevos_datos)
+    return render(req, 'facturas/preliminar.html', {'data': data, 'suma_total_igv': "{:.2f}".format(suma_total_igv), 'suma_importe_total': "{:.2f}".format(suma_importe_total), 'suma_total_descuento': "{:.2f}".format(suma_total_descuento), 'suma_total_venta': "{:.2f}".format(suma_total_venta), 'nuevos_datos': nuevos_datos})
+
 
 
 def print_fact(req):
