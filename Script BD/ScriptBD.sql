@@ -182,7 +182,7 @@ WHERE id_producto = in_id_producto;
 
 create procedure `sp_eliminar_factura`(IN in_id_factura SMALLINT)
 delete from bd_farmacia.factura where factura.num_factura=in_id_factura;
-
+call sp_eliminar_factura(30010);
 CREATE PROCEDURE `sp_eliminar_cliente`(IN in_ruc_cliente CHAR(11))
 DELETE FROM cliente
 WHERE ruc = in_ruc_cliente;
@@ -202,7 +202,7 @@ SELECT factura.num_factura, factura.ruc, factura.fecha, detalle.id_producto, det
 FROM factura INNER JOIN detalle
 WHERE factura.num_factura = detalle. id_factura AND factura.num_factura=in_id_factura;
 
-call sp_buscar_factura_por_id(00001);
+call sp_buscar_factura_por_id(30004);
 /* =============================================================================================
 											MOSTRAR
 ============================================================================================= */
