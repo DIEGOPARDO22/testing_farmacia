@@ -212,7 +212,7 @@ create procedure `sp_ver_ultima_factura`() SELECT MAX(num_factura) FROM factura;
 DELIMITER //
 CREATE TRIGGER `actualizar_stock_producto` AFTER INSERT ON detalle FOR EACH ROW BEGIN
 UPDATE producto
-SET stock = stock - NEW.cantidad
+SET stock = GREATEST(stock - NEW.cantidad, 0)
 WHERE id_producto = NEW.id_producto;
 END //
 DELIMITER ;

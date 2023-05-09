@@ -105,7 +105,12 @@ def crear_factura_y_detalle(req):
     clientes_lista = cursor.fetchall()
 
     cursor.execute('CALL sp_listar_producto')
-    productos_lista = cursor.fetchall()
+    productos_lista_inicial = cursor.fetchall()
+    productos_lista = []
+
+    for tupla in productos_lista_inicial:
+        if tupla[3] > 0:
+            productos_lista.append(tupla)
     
     if req.method == "POST":
         # Manejar la creación de la factura
