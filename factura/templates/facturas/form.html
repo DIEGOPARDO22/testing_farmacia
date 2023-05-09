@@ -3,7 +3,7 @@
 {% block contenido %}
 <br/><br/>
 
-<div class="card">
+<div class="card" style= "margin-top: 30px;">
     <div class="card-header">
         Insertar Factura
     </div>
@@ -12,14 +12,15 @@
 
         <form method="POST">
             {% csrf_token %}
-            {% if data %}
-            
-            {% else %}
             <div class="mb-3">
               <label for="cliente" class="form-label">Cliente</label>
-              <input type="text" class="form-control" name="cliente" id="cliente" pattern="[A-Za-zÀ-ÿ\s]+" aria-describedby="helpId" maxlength="25" placeholder="Búsqueda de Cliente" required>
-            </div>
-            
+              <input type="text" class="form-control" name="cliente" id="cliente" pattern="[A-Za-zÀ-ÿ0-9\s.,:;-]+" aria-describedby="helpId" maxlength="25" placeholder="Búsqueda de Cliente" required>
+              <script>
+                const input = document.getElementById('cliente');
+                input.addEventListener('input', function() {
+                this.value = this.value.replace(/[^\w\s\.\,\&\"]/gi, ''); // Remover caracteres no permitidos
+                });
+              </script>
               <select class="form-select text-muted" aria-label="Default select example" name="ruc" id="ruc">
                 {% for r in ruc %}
                 <option value="{{ r.0 }}">{{ r.1 }}</option>
@@ -66,7 +67,11 @@
             
             <div class="mb-3">
               <label for="" class="form-label">Fecha</label>
-              <input type="date" class="form-control" id="" name="fecha" date-format="yyyy-mm-dd" max="9999-12-29" value="2023-05-07">
+              <input type="date" class="form-control" id="" name="fecha" date-format="yyyy-mm-dd" max="9999-12-29" value="{{fecha_actual}}">
+              <script>
+                var fecha_actual = new Date().toISOString().substr(0, 10);
+                document.getElementsByName("fecha")[0].setAttribute("value", fecha_actual);
+              </script>
               <small id="helpId" class="form-text text-muted" style="display: block;">(!) Formato MM-DD-AAAA</small>
             </div>
             
@@ -134,7 +139,6 @@
                 <button type="submit" class="btn btn-primary">Ingresar</button>
                 <a name="" id="" class="btn btn-danger" href="{% url 'facturas' %}" role="button">Cancelar</a>
             </div>
-            {% endif %}
         </form>
 
     </div>

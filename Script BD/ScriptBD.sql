@@ -4,7 +4,6 @@
 CREATE DATABASE BD_Farmacia;
 USE BD_Farmacia;
 
-
 /*CREACION DE TABLA CLIENTE*/
 CREATE TABLE IF NOT EXISTS cliente(
     ruc CHAR(11) NOT NULL,
@@ -103,8 +102,6 @@ INSERT INTO producto (nombre, precio, stock, id_categoria) VALUES
 ('Hierro', 8.25, 50, '003'),
 ('Vitamina B12', 7.50, 75, '003');
 
-
-
 INSERT INTO detalle (id_factura, id_producto, cantidad) VALUES
 ('30001', '1001', 2),
 ('30002', '1003', 1),
@@ -116,12 +113,6 @@ INSERT INTO detalle (id_factura, id_producto, cantidad) VALUES
 ('30008', '1004', 1),
 ('30009', '1001', 1),
 ('30008', '1003', 2);
-
-SELECT * FROM cliente;
-SELECT * FROM categoria;
-SELECT * FROM factura;
-SELECT * FROM producto;
-SELECT * FROM detalle;
 
 /* =============================================================================================
 											LISTAR
@@ -157,7 +148,6 @@ INSERT INTO factura(ruc, fecha) VALUES(ruc, fecha);
 
 CREATE PROCEDURE `sp_crear_detalle`(in id_factura SMALLINT, in id_producto SMALLINT, in cantidad INT)
 INSERT INTO detalle(id_factura, id_producto, cantidad) VALUES(id_factura, id_producto, cantidad);
-
 
 /* =============================================================================================
 											EDITAR
@@ -201,7 +191,6 @@ SELECT factura.num_factura, factura.ruc, factura.fecha, detalle.id_producto, det
 FROM factura INNER JOIN detalle
 WHERE factura.num_factura = detalle. id_factura AND factura.num_factura=in_id_factura;
 
-call sp_buscar_factura_por_id(30004);
 /* =============================================================================================
 											MOSTRAR
 ============================================================================================= */
@@ -214,8 +203,6 @@ INNER JOIN cliente ON cliente.ruc = factura.ruc
 INNER JOIN producto ON producto.id_producto = detalle.id_producto WHERE
 factura.num_factura = num_fac;
 
-select * from factura;
-call sp_ver_factura (30001);
 /* =============================================================================================
 											ULTIMA FACTURA
 ============================================================================================= */

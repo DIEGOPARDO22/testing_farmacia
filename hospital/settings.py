@@ -80,7 +80,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'BD_Farmacia',
         'USER':'root',
-        'PASSWORD':'MySQL#435929',
+        'PASSWORD':'CONTRASENIA', #Aqui poner la contraseña que cada uno tiene en MySQL
         'HOST':'localhost',
         'PORT':'3306'
     }
@@ -111,7 +111,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'America/Lima'
 
 USE_I18N = True
 
