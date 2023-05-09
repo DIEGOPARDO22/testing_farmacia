@@ -106,7 +106,7 @@
                   // Agregar las celdas de cantidad y producto
                   nuevaFila.innerHTML = `
                     <td>
-                      <input type="text" id="cantidad" class="form-control" name="cantidad[]" maxlength="3" pattern="[0-9]+" required>
+                      <input type="text" id="cantidad" class="form-control" name="cantidad[]" maxlength="3" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0,3);" required>
                       <small id="helpId" class="form-text text-muted">(!) Sólo valores numéricos</small>
                     </td>
                     <td>

@@ -208,3 +208,11 @@ factura.num_factura = num_fac;
 											ULTIMA FACTURA
 ============================================================================================= */
 create procedure `sp_ver_ultima_factura`() SELECT MAX(num_factura) FROM factura;
+
+DELIMITER //
+CREATE TRIGGER `actualizar_stock_producto` AFTER INSERT ON detalle FOR EACH ROW BEGIN
+UPDATE producto
+SET stock = stock - NEW.cantidad
+WHERE id_producto = NEW.id_producto;
+END //
+DELIMITER ;
