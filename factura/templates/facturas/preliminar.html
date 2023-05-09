@@ -5,38 +5,41 @@
 <br/>
 <br/>
 
-<div style= "margin-top: 50px;" class="container">
+<div style= "margin-top: 30px;" class="container">
+        
         <div class="d-flex mb-3">
-            <div class="flex-fill "></div>
-            <div class=" flex-fill "></div>
-            <div class=" flex-fill">
-                <form>
-                    <div class="form-group">
-                        <label class="h3" for="nombre">FACTURA ELECTRONICA</label>
-                        <p>RUC: {{data.0.0}}</p>
-                    </div>
-                    <br>                   
-                </form>
+            <div class="flex-fill" style="border: 1px solid black; border-radius: 10px; padding: 10px;">
+                <p class="h2"> FARMACIA LAS ANTENAS</p>
+                <p class="h5"> Calle San Juan 456 - Arequipa</p>
+                <p class="h6"> RUC: 20123456789</p>
             </div>
+            <div class="flex-fill" style="border: 1px solid black; border-radius: 10px; padding: 10px">
+                <label class="h2" for="nombre"><h4>FACTURA ELECTRONICA</h3></label>
+                <p>Nro: {{data.0.0}}</p>
+            </div>   
+            <hr>
         </div>
-        <div class="d-flex mb-3">
+        <div class="d-flex mb-3" style="display: flex;">
             <div class="flex-fill ">
-                <p class="h5"> FARMACIA LAS ANTENAS</p>
-                <hr>
                 <p class="h6"><br> <b>FECHA DE EMISION:</b><br></p>
-                <p>{{data.0.1}}</p>
+                <p>{{data.0.1}}</p>                
+            </div>
+            <div class=" flex-fill ">
                 <p><br><b>RAZON SOCIAL:</b><br></p>
                 <p>{{data.0.2}}</p>
+            </div>
+            <div class=" flex-fill">
                 <p class="h6"><br><b>RUC </b><br></p>
                 <p>{{data.0.3}}</p>
+            </div>
+            <div class=" flex-fill">
                 <p class="h6"><br><b>Tipo de Moneda</b> <br></p>
                 <p>SOLES</p>
-                <p class="h6"><br><b>DIRECCION</b> <br></p>
-                <p>{{data.0.7}}</p>
-        
             </div>
-            <div class=" flex-fill "></div>
-            <div class=" flex-fill"></div>
+        </div>
+        <div>
+            <p class="h6"><br><b>DIRECCION</b> <br></p>
+                <p>{{data.0.7}}</p>
         </div>
         <div>
             <table class="table mt-4">
