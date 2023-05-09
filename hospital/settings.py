@@ -80,9 +80,9 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'BD_Farmacia',
         'USER':'root',
-        'PASSWORD':'CONTRASENIA', #Aqui poner la contraseña que cada uno tiene en MySQL
-        'HOST':'localhost',
-        'PORT':'3306'
+        'PASSWORD':'', #Aqui poner la contraseña que cada uno tiene en MySQL
+        'HOST':'127.0.0.1',
+        'PORT':'3308'
     }
 }
 
